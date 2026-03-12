@@ -1,0 +1,9 @@
+Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
+"E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/basically aseprite.png","E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/bin/DesktopGL/basically aseprite.xnb","TextureProcessor","Texture2DContent",934,18517,0.6104746
+"E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/betterBlend.fx","E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/bin/DesktopGL/betterBlend.xnb","EffectProcessor","CompiledEffectContent",874,642,0.4408614
+"E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/blocky sans.png","E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/bin/DesktopGL/blocky sans.xnb","TextureProcessor","Texture2DContent",1663,44129,0.0260177
+"E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/grayscale.fx","E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/bin/DesktopGL/grayscale.xnb","EffectProcessor","CompiledEffectContent",876,771,0.3387075
+"E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/mostly sans.png","E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/bin/DesktopGL/mostly sans.xnb","TextureProcessor","Texture2DContent",822,15501,0.0030038
+"E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/silhouette.fx","E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/bin/DesktopGL/silhouette.xnb","EffectProcessor","CompiledEffectContent",703,615,0.4004687
+"E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/spritesheet.png","E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/bin/DesktopGL/spritesheet.xnb","TextureProcessor","Texture2DContent",7770,262229,0.1631482
+"E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/tiny mono.png","E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/bin/DesktopGL/tiny mono.xnb","TextureProcessor","Texture2DContent",458,5881,0.0030029

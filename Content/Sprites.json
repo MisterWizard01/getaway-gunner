@@ -1,0 +1,415 @@
+{
+  "ship": {
+    "TextureName": "spritesheet",
+    "Animations": {
+      "fly down": {
+        "Frames": [
+          {
+            "X": 0,
+            "Y": 0
+          }
+        ],
+        "EndAction": 0,
+        "Size": {
+          "X": 20,
+          "Y": 20
+        }
+      },
+      "fly downright": {
+        "Frames": [
+          {
+            "X": 20,
+            "Y": 0
+          }
+        ],
+        "EndAction": 0,
+        "Size": {
+          "X": 20,
+          "Y": 20
+        }
+      },
+      "fly right": {
+        "Frames": [
+          {
+            "X": 40,
+            "Y": 0
+          }
+        ],
+        "EndAction": 0,
+        "Size": {
+          "X": 20,
+          "Y": 20
+        }
+      },
+      "fly upright": {
+        "Frames": [
+          {
+            "X": 60,
+            "Y": 0
+          }
+        ],
+        "EndAction": 0,
+        "Size": {
+          "X": 20,
+          "Y": 20
+        }
+      },
+      "fly up": {
+        "Frames": [
+          {
+            "X": 80,
+            "Y": 0
+          }
+        ],
+        "EndAction": 0,
+        "Size": {
+          "X": 20,
+          "Y": 20
+        }
+      },
+      "fly upleft": {
+        "Frames": [
+          {
+            "X": 100,
+            "Y": 0
+          }
+        ],
+        "EndAction": 0,
+        "Size": {
+          "X": 20,
+          "Y": 20
+        }
+      },
+      "fly left": {
+        "Frames": [
+          {
+            "X": 120,
+            "Y": 0
+          }
+        ],
+        "EndAction": 0,
+        "Size": {
+          "X": 20,
+          "Y": 20
+        }
+      },
+      "fly downleft": {
+        "Frames": [
+          {
+            "X": 140,
+            "Y": 0
+          }
+        ],
+        "EndAction": 0,
+        "Size": {
+          "X": 20,
+          "Y": 20
+        }
+      }
+    }
+  },
+  "shot": {
+    "TextureName": "spritesheet",
+    "Animations": {
+      "shot down": {
+        "Frames": [
+          {
+            "X": 0,
+            "Y": 0
+          }
+        ],
+        "EndAction": 0,
+        "Size": {
+          "X": 16,
+          "Y": 16
+        }
+      },
+      "shot downright": {
+        "Frames": [
+          {
+            "X": 16,
+            "Y": 0
+          }
+        ],
+        "EndAction": 0,
+        "Size": {
+          "X": 16,
+          "Y": 16
+        }
+      },
+      "shot right": {
+        "Frames": [
+          {
+            "X": 32,
+            "Y": 0
+          }
+        ],
+        "EndAction": 0,
+        "Size": {
+          "X": 16,
+          "Y": 16
+        }
+      },
+      "shot upright": {
+        "Frames": [
+          {
+            "X": 48,
+            "Y": 0
+          }
+        ],
+        "EndAction": 0,
+        "Size": {
+          "X": 16,
+          "Y": 16
+        }
+      },
+      "shot up": {
+        "Frames": [
+          {
+            "X": 64,
+            "Y": 0
+          }
+        ],
+        "EndAction": 0,
+        "Size": {
+          "X": 16,
+          "Y": 16
+        }
+      },
+      "shot upleft": {
+        "Frames": [
+          {
+            "X": 80,
+            "Y": 0
+          }
+        ],
+        "EndAction": 0,
+        "Size": {
+          "X": 16,
+          "Y": 16
+        }
+      },
+      "shot left": {
+        "Frames": [
+          {
+            "X": 96,
+            "Y": 0
+          }
+        ],
+        "EndAction": 0,
+        "Size": {
+          "X": 16,
+          "Y": 16
+        }
+      },
+      "shot downleft": {
+        "Frames": [
+          {
+            "X": 112,
+            "Y": 0
+          }
+        ],
+        "EndAction": 0,
+        "Size": {
+          "X": 16,
+          "Y": 16
+        }
+      }
+    }
+  },
+  "enemy": {
+    "TextureName": "spritesheet",
+    "Animations": {
+      "enemy down": {
+        "Frames": [
+          {
+            "X": 0,
+            "Y": 0
+          }
+        ],
+        "EndAction": 0,
+        "Size": {
+          "X": 22,
+          "Y": 22
+        }
+      },
+      "enemy downright": {
+        "Frames": [
+          {
+            "X": 22,
+            "Y": 0
+          }
+        ],
+        "EndAction": 0,
+        "Size": {
+          "X": 22,
+          "Y": 22
+        }
+      },
+      "enemy right": {
+        "Frames": [
+          {
+            "X": 44,
+            "Y": 0
+          }
+        ],
+        "EndAction": 0,
+        "Size": {
+          "X": 22,
+          "Y": 22
+        }
+      },
+      "enemy upright": {
+        "Frames": [
+          {
+            "X": 66,
+            "Y": 0
+          }
+        ],
+        "EndAction": 0,
+        "Size": {
+          "X": 22,
+          "Y": 22
+        }
+      },
+      "enemy up": {
+        "Frames": [
+          {
+            "X": 88,
+            "Y": 0
+          }
+        ],
+        "EndAction": 0,
+        "Size": {
+          "X": 22,
+          "Y": 22
+        }
+      },
+      "enemy upleft": {
+        "Frames": [
+          {
+            "X": 110,
+            "Y": 0
+          }
+        ],
+        "EndAction": 0,
+        "Size": {
+          "X": 22,
+          "Y": 22
+        }
+      },
+      "enemy left": {
+        "Frames": [
+          {
+            "X": 132,
+            "Y": 0
+          }
+        ],
+        "EndAction": 0,
+        "Size": {
+          "X": 22,
+          "Y": 22
+        }
+      },
+      "enemy downleft": {
+        "Frames": [
+          {
+            "X": 154,
+            "Y": 0
+          }
+        ],
+        "EndAction": 0,
+        "Size": {
+          "X": 22,
+          "Y": 22
+        }
+      }
+    }
+  },
+  "pickup": {
+    "TextureName": "spritesheet",
+    "Animations": {
+      "pickup": {
+        "Frames": [
+          {
+            "X": 0,
+            "Y": 0
+          },
+          {
+            "X": 16,
+            "Y": 0
+          },
+          {
+            "X": 32,
+            "Y": 0
+          },
+          {
+            "X": 48,
+            "Y": 0
+          },
+          {
+            "X": 64,
+            "Y": 0
+          },
+          {
+            "X": 80,
+            "Y": 0
+          },
+          {
+            "X": 96,
+            "Y": 0
+          },
+          {
+            "X": 112,
+            "Y": 0
+          },
+          {
+            "X": 128,
+            "Y": 0
+          },
+          {
+            "X": 144,
+            "Y": 0
+          },
+          {
+            "X": 160,
+            "Y": 0
+          },
+          {
+            "X": 176,
+            "Y": 0
+          },
+          {
+            "X": 192,
+            "Y": 0
+          },
+          {
+            "X": 208,
+            "Y": 0
+          },
+          {
+            "X": 224,
+            "Y": 0
+          },
+          {
+            "X": 240,
+            "Y": 0
+          },
+          {
+            "X": 256,
+            "Y": 0
+          },
+          {
+            "X": 272,
+            "Y": 0
+          }
+        ],
+        "EndAction": 1,
+        "Size": {
+          "X": 16,
+          "Y": 16
+        }
+      }
+    }
+  }
+}

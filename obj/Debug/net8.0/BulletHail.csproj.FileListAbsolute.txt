@@ -44,3 +44,13 @@ e:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net8.0\Content\tiny m
 e:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net8.0\SpriteBuilder.dll
 e:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net8.0\SpriteBuilder.pdb
 e:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net8.0\Content\spritesheet.xnb
+C:\Users\gcagl\source\repos\getaway-gunner\obj\Debug\net8.0\mgcb.tool.restore
+C:\Users\gcagl\source\repos\getaway-gunner\obj\Debug\net8.0\BulletHail.csproj.AssemblyReference.cache
+C:\Users\gcagl\source\repos\getaway-gunner\obj\Debug\net8.0\BulletHail.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\gcagl\source\repos\getaway-gunner\obj\Debug\net8.0\BulletHail.AssemblyInfoInputs.cache
+C:\Users\gcagl\source\repos\getaway-gunner\obj\Debug\net8.0\BulletHail.AssemblyInfo.cs
+C:\Users\gcagl\source\repos\getaway-gunner\obj\Debug\net8.0\BulletHail.csproj.CoreCompileInputs.cache
+C:\Users\gcagl\source\repos\getaway-gunner\obj\Debug\net8.0\BulletHail.sourcelink.json
+C:\Users\gcagl\source\repos\getaway-gunner\obj\Debug\net8.0\BulletHail.dll
+C:\Users\gcagl\source\repos\getaway-gunner\obj\Debug\net8.0\refint\BulletHail.dll
+C:\Users\gcagl\source\repos\getaway-gunner\obj\Debug\net8.0\BulletHail.pdb

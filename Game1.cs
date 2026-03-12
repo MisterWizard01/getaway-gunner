@@ -56,7 +56,7 @@ public class Game1 : Game
 
     private GameState gameState;
     private bool paused;
-    private int score, lives;
+    private int score, lives, freezeFrames, iFramesEnd;
 
     private GameObject ship;
     private float prevFacing, shipSpeed, facing;
@@ -76,6 +76,8 @@ public class Game1 : Game
     
     private List<Particle> particles;
 
+    private bool PlayerVulnerable => (lives > 0 && frameNumber > iFramesEnd);
+
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -84,7 +86,7 @@ public class Game1 : Game
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
 
-        _inputManager = new(InputMode.XBoxController, Enum.GetValues(typeof(InputSignal)).Length);
+        _inputManager = new(InputMode.KeyboardOnly, Enum.GetValues(typeof(InputSignal)).Length);
         _juicyCM = new();
         random = new();
     }
@@ -103,6 +105,8 @@ public class Game1 : Game
         gameState = GameState.Title;
         score = 0;
         lives = 3;
+        freezeFrames = 0;
+        iFramesEnd = 0;
 
         ship = new GameObject(_camera.GameRect.Center.ToVector2())
         {
@@ -218,6 +222,14 @@ public class Game1 : Game
 
         if (paused && !(keyboardState.IsKeyDown(Keys.OemPeriod) && _prevKeyboardState.IsKeyUp(Keys.OemPeriod)))
         {
+            _prevKeyboardState = keyboardState;
+            _previousGamePadState = gamePadState;
+            return;
+        }
+
+        if (freezeFrames > 0)
+        {
+            freezeFrames--;
             _prevKeyboardState = keyboardState;
             _previousGamePadState = gamePadState;
             return;
@@ -384,14 +396,11 @@ public class Game1 : Game
             if (dead) continue;
 
             //enemy collision w player
-            if (CollisionManager.CheckCollisionSimple(ship.Colliders[0], enemy.Colliders[0], ship.Position, enemy.Position))
+            if (PlayerVulnerable
+            && CollisionManager.CheckCollisionSimple(ship.Colliders[0], enemy.Colliders[0], ship.Position, enemy.Position))
             {
                 enemies.Remove(enemy);
-                lives -= 1;
-                if (lives <= 0)
-                {
-                    gameState = GameState.GameOver;
-                }
+                HitPlayer();
             }
 
             //enemy shooting
@@ -471,14 +480,11 @@ public class Game1 : Game
             }
 
             //bullet collision w player
-            if (CollisionManager.CheckCollisionSimple(ship.Colliders[0], bullet.Colliders[0], ship.Position, bullet.Position))
+            if (PlayerVulnerable
+            && CollisionManager.CheckCollisionSimple(ship.Colliders[0], bullet.Colliders[0], ship.Position, bullet.Position))
             {
                 bullets.Remove(bullet);
-                lives -= 1;
-                if (lives <= 0)
-                {
-                    gameState = GameState.GameOver;
-                }
+                HitPlayer();
             }
         }
     }
@@ -529,6 +535,18 @@ public class Game1 : Game
         });
     }
 
+    private void HitPlayer()
+    {
+        lives -= 1;
+        freezeFrames = 30;
+        iFramesEnd = frameNumber + 120;
+        Explode(ship.Position);
+        if (lives <= 0)
+        {
+            gameState = GameState.GameOver;
+        }
+    }
+
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.Black);
@@ -558,7 +576,8 @@ public class Game1 : Game
             {
                 shot.Draw(null, _camera, Vector2.Zero);
             }
-            ship.Draw(null, _camera, Vector2.Zero);
+            if (frameNumber > iFramesEnd || frameNumber % 20 < 10)
+                ship.Draw(null, _camera, Vector2.Zero);
             // _camera.Draw(_whitePixel, new Rectangle((ship.Position + ship.Colliders[0].Position).ToPoint(), ship.Colliders[0].Dimensions.ToPoint()), Color.Red);
         }
 

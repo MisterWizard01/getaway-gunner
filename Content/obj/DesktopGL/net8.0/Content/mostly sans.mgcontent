@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <SourceFile>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/mostly sans.png</SourceFile>
-  <SourceTime>2023-08-13T14:53:27.0141532-04:00</SourceTime>
-  <DestFile>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/bin/DesktopGL/Content/mostly sans.xnb</DestFile>
-  <DestTime>2026-03-01T08:45:41.038769-05:00</DestTime>
+  <SourceFile>C:/Users/gcagl/source/repos/getaway-gunner/Content/mostly sans.png</SourceFile>
+  <SourceTime>2026-03-12T08:33:48.9297753-04:00</SourceTime>
+  <DestFile>C:/Users/gcagl/source/repos/getaway-gunner/Content/bin/DesktopGL/Content/mostly sans.xnb</DestFile>
+  <DestTime>2026-03-12T15:14:29.7238037-04:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2025-06-02T06:31:02-04:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

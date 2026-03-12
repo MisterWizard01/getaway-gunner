@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <SourceFile>C:/Users/gcagl/source/repos/getaway-gunner/Content/silhouette.fx</SourceFile>
+  <SourceTime>2026-03-12T08:33:48.9515887-04:00</SourceTime>
+  <DestFile>C:/Users/gcagl/source/repos/getaway-gunner/Content/bin/DesktopGL/Content/silhouette.xnb</DestFile>
+  <DestTime>2026-03-12T17:24:42.5536927-04:00</DestTime>
+  <Importer>EffectImporter</Importer>
+  <ImporterTime>2025-06-02T06:31:02-04:00</ImporterTime>
+  <Processor>EffectProcessor</Processor>
+  <ProcessorTime>2025-06-02T06:31:02-04:00</ProcessorTime>
+  <Parameters>
+    <Key>DebugMode</Key>
+    <Value>Auto</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>

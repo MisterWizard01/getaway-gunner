@@ -60,6 +60,7 @@ public class Game1 : Game
 
     private GameObject ship;
     private float prevFacing, shipSpeed, facing;
+    private bool willExplode;
 
     private List<GameObject> shots;
     private float shotSpeed;
@@ -110,7 +111,7 @@ public class Game1 : Game
 
         ship = new GameObject(_camera.GameRect.Center.ToVector2())
         {
-            Sprites = [new SpriteNode(_juicyCM.Sprites["ship"], "up")],
+            Sprites = [new SpriteNode(_juicyCM.Textures["spritesheet"], _juicyCM.Animations["shipright"])],
             Colliders = [new ColliderNode(-3, -3, 6, 6)],
         };
         prevFacing = 0;
@@ -148,52 +149,27 @@ public class Game1 : Game
         _juicyCM.LoadTextures(Content, FileManager.GetContentFolder());
         //_juicyCM.LoadSprites(Path.Combine(FileManager.GetContentFolder(), "sprites/Sprites.json"));
         //LoadSceneFromTiled(Path.Combine(commonFolder, "tiled\\test.json"));
-        //_background = _juicyCM.Textures["background"];
+        // _background = _juicyCM.Textures["background"];
 
-        _juicyCM.Sprites.Add("ship", new Sprite("spritesheet"));
-        _juicyCM.Sprites["ship"].Animations = JuicyContentManager.GenerateAnimationSet(directionNames, 1, 0, 0, 20, 20, 0, 0, false);
-
-        _juicyCM.Sprites.Add("enemy", new Sprite("spritesheet"));
-        _juicyCM.Sprites["enemy"].Animations = JuicyContentManager.GenerateAnimationSet(directionNames, 1, 0, 20, 22, 22, 0, 0, false);
-
-        _juicyCM.Sprites.Add("shot", new Sprite("spritesheet"));
-        _juicyCM.Sprites["shot"].Animations = JuicyContentManager.GenerateAnimationSet(directionNames, 1, 0, 64, 16, 16, 0, 0, false);
-
-        _juicyCM.Sprites.Add("pickup", new Sprite("spritesheet"));
-        _juicyCM.Sprites["pickup"].Animations.Add("pickup", JuicyContentManager.GenerateAnimation(18, 0, 96, 8, 8, 0, true));
-        _juicyCM.Sprites["pickup"].Animations["pickup"].EndAction = AnimationEndAction.Cycle;
-
-        _juicyCM.Sprites.Add("bullet", new Sprite("spritesheet"));
-        _juicyCM.Sprites["bullet"].Animations.Add("bullet", JuicyContentManager.GenerateAnimation(4, 192, 64, 12, 12, 0, true));
-        _juicyCM.Sprites["bullet"].Animations["bullet"].EndAction = AnimationEndAction.PingPong;
-
-        _juicyCM.Sprites.Add("muzzle flash", new Sprite("spritesheet"));
-        _juicyCM.Sprites["muzzle flash"].Animations = JuicyContentManager.GenerateAnimationSet(directionNames, 6, 0, 112, 32, 32, 0, 0, true);
-
-        _juicyCM.Sprites.Add("shot pop", new Sprite("spritesheet"));
-        _juicyCM.Sprites["shot pop"].Animations.Add("shot pop", JuicyContentManager.GenerateAnimation(7, 0, 48, 12, 12, 0, true));
-
-        _juicyCM.Sprites.Add("explosion", new Sprite("spritesheet"));
-        _juicyCM.Sprites["explosion"].Animations.Add("explosion", JuicyContentManager.GenerateAnimation(10, 176, 0, 32, 32, 0, true));
-        
-        _juicyCM.Sprites.Add("explosion flash", new Sprite("spritesheet"));
-        _juicyCM.Sprites["explosion flash"].Animations.Add("explosion flash", JuicyContentManager.GenerateAnimation(4, 176, 32, 32, 32, 0, true));
-
-        _juicyCM.Sprites.Add("spark", new Sprite("spritesheet"));
-        _juicyCM.Sprites["spark"].Animations.Add("vertical", JuicyContentManager.GenerateAnimation(9, 304, 48, 3, 19, 0, true));
-        _juicyCM.Sprites["spark"].Animations.Add("horizontal", JuicyContentManager.GenerateAnimation(9, 331, 48, 19, 3, 0, false));
-        _juicyCM.Sprites["spark"].Animations.Add("positive diagonal", JuicyContentManager.GenerateAnimation(9, 352, 48, 16, 16, 0, true));
-        _juicyCM.Sprites["spark"].Animations.Add("negative diagonal", JuicyContentManager.GenerateAnimation(9, 352, 64, 16, 16, 0, true));
-        _juicyCM.Sprites["spark"].Animations.Add("steep positive", JuicyContentManager.GenerateAnimation(9, 352, 80, 16, 16, 0, true));
-        _juicyCM.Sprites["spark"].Animations.Add("steep negative", JuicyContentManager.GenerateAnimation(9, 352, 96, 16, 16, 0, true));
-        _juicyCM.Sprites["spark"].Animations.Add("shallow positive", JuicyContentManager.GenerateAnimation(9, 352, 112, 16, 16, 0, true));
-        _juicyCM.Sprites["spark"].Animations.Add("shallow negative", JuicyContentManager.GenerateAnimation(9, 352, 128, 16, 16, 0, true));
-
-        foreach (var sprite in _juicyCM.Sprites.Values)
-        {
-            if (_juicyCM.Textures.TryGetValue(sprite.TextureName, out Texture2D value))
-                sprite.Texture = value;
-        }
+        _juicyCM.GenerateAnimationSet("ship", directionNames, 1, 0, 0, 20, 20, 0, 0, false);
+        _juicyCM.GenerateAnimationSet("enemy", directionNames, 1, 0, 20, 22, 22, 0, 0, false);
+        _juicyCM.GenerateAnimationSet("shot", directionNames, 1, 0, 64, 16, 16, 0, 0, false);
+        _juicyCM.GenerateAnimation("pickup", 18, 0, 96, 8, 8, 0, true)
+            .EndAction = AnimationEndAction.Cycle;
+        _juicyCM.GenerateAnimation("bullet", 4, 192, 64, 12, 12, 0, true)
+            .EndAction = AnimationEndAction.Reverse;
+        _juicyCM.GenerateAnimationSet("muzzle flash", directionNames, 6, 0, 112, 32, 32, 0, 0, true);
+        _juicyCM.GenerateAnimation("shot pop", 7, 0, 48, 12, 12, 0, true);
+        _juicyCM.GenerateAnimation("explosion", 10, 176, 0, 32, 32, 0, true);
+        _juicyCM.GenerateAnimation("explosion flash", 4, 176, 32, 32, 32, 0, true);
+        _juicyCM.GenerateAnimation("spark vertical", 9, 304, 48, 3, 19, 0, true);
+        _juicyCM.GenerateAnimation("spark horizontal", 9, 331, 48, 19, 3, 0, false);
+        _juicyCM.GenerateAnimation("spark positive diagonal", 9, 352, 48, 16, 16, 0, true);
+        _juicyCM.GenerateAnimation("spark negative diagonal", 9, 352, 64, 16, 16, 0, true);
+        _juicyCM.GenerateAnimation("spark steep positive", 9, 352, 80, 16, 16, 0, true);
+        _juicyCM.GenerateAnimation("spark steep negative", 9, 352, 96, 16, 16, 0, true);
+        _juicyCM.GenerateAnimation("spark shallow positive", 9, 352, 112, 16, 16, 0, true);
+        _juicyCM.GenerateAnimation("spark shallow negative", 9, 352, 128, 16, 16, 0, true);
 
         // _juicyCM.LoadFonts();
         _juicyCM.Fonts.Add("tiny mono", FontBuilder.BuildFont(_juicyCM.Textures["tiny mono"], new Point(3, 3), new Point(1, 1), ' ', false));
@@ -258,13 +234,14 @@ public class Game1 : Game
                 bullets.Clear();
                 score = 0;
                 lives = 3;
+                iFramesEnd = 0;
                 gameState = GameState.Title;
             }
         }
         else
         {
-            UpdateBullets();
             UpdatePlayer(inputState);
+            UpdateBullets();
             UpdateEnemies();
             UpdatePickups(inputState);
         }
@@ -280,6 +257,13 @@ public class Game1 : Game
 
     private void UpdatePlayer(InputState inputState)
     {
+        //create an explosion if the player was hit on the last frame
+        if (willExplode)
+        {
+            Explode(ship.Position);
+            willExplode = false;
+        }
+
         //movement
         Vector2 moveVector = new(
             inputState.GetInput((int)InputSignal.HorizontalMovement),
@@ -294,7 +278,7 @@ public class Game1 : Game
             facing = MathHelper.Snap(facing, MathF.PI / 4);
             moveVector = MathHelper.AngleToVector(facing);
             moveVector /= moveVector.Length();
-            ship.Sprites[0].SetAnimation(JuicyContentManager.DirectionString(directionNames, facing));
+            _juicyCM.SetSpriteAnimation(ship.Sprites[0], "ship" + JuicyContentManager.DirectionString(directionNames, facing));
             if (facing != prevFacing)
             {
                 ship.X = MathF.Round(ship.X);
@@ -311,7 +295,7 @@ public class Game1 : Game
         if (fireVector.LengthSquared() > 0)
         {
             facing = MathHelper.VectorToAngle(fireVector);
-            ship.Sprites[0].SetAnimation(JuicyContentManager.DirectionString(directionNames, facing));
+            _juicyCM.SetSpriteAnimation(ship.Sprites[0], "ship" + JuicyContentManager.DirectionString(directionNames, facing));
             if (frameNumber >= nextShot)
             {
                 // for (int i = -1; i < 2; i++)
@@ -319,7 +303,7 @@ public class Game1 : Game
                 {
                     var shot = new GameObject(ship.Position)
                     {
-                        Sprites = [new SpriteNode(_juicyCM.Sprites["shot"], JuicyContentManager.DirectionString(directionNames, facing))],
+                        Sprites = [_juicyCM.GenerateSprite("spritesheet", "shot" + JuicyContentManager.DirectionString(directionNames, facing))],
                         Colliders = [new ColliderNode(-4, -4, 8, 8)],
                         Velocity = MathHelper.AngleToVector(facing + i * MathF.PI / 12, shotSpeed),
                     };
@@ -327,8 +311,7 @@ public class Game1 : Game
 
                     var muzzleFlash = new Particle(ship.Position + Vector2.Normalize(fireVector) * 10)
                     {
-                        Sprites = [new SpriteNode(_juicyCM.Sprites["muzzle flash"], JuicyContentManager.DirectionString(directionNames, facing))],
-                        Lifetime = _juicyCM.Sprites["muzzle flash"].Animations[JuicyContentManager.DirectionString(directionNames, facing)].Length,
+                        Sprites = [_juicyCM.GenerateSprite("spritesheet", "muzzle flash" + JuicyContentManager.DirectionString(directionNames, facing))],
                     };
                     particles.Add(muzzleFlash);
                 }
@@ -360,7 +343,7 @@ public class Game1 : Game
                 facing = MathHelper.Snap(facing, MathF.PI / 4);
                 enemy.Position += MathHelper.AngleToVector(facing, enemySpeed);
             }
-            enemy.Sprites[0].SetAnimation(JuicyContentManager.DirectionString(directionNames, facing));
+            _juicyCM.SetSpriteAnimation(enemy.Sprites[0], "enemy" + JuicyContentManager.DirectionString(directionNames, facing));
 
             //enemy collision w shots
             var dead = false;
@@ -372,8 +355,7 @@ public class Game1 : Game
                     shots.Remove(shot);
                     particles.Add(new Particle(shot.Position)
                     {
-                        Sprites = [new SpriteNode(_juicyCM.Sprites["shot pop"], "shot pop")],
-                        Lifetime = _juicyCM.Sprites["shot pop"].Animations["shot pop"].Length,
+                        Sprites = [_juicyCM.GenerateSprite("spritesheet", "shot pop")],
                     });
                     for (int k = -1; k < 2; k++)
                     {
@@ -384,7 +366,7 @@ public class Game1 : Game
                     {
                         enemies.Remove(enemy);
                         pickups.Add(new GameObject(enemy.Position) {
-                            Sprites = [new SpriteNode(_juicyCM.Sprites["pickup"], "pickup")],
+                            Sprites = [_juicyCM.GenerateSprite("spritesheet", "pickup")],
                             Colliders = [new ColliderNode(-4, -4, 8, 8)],
                         });
                         Explode(enemy.Position);
@@ -406,14 +388,21 @@ public class Game1 : Game
             //enemy shooting
             if (frameNumber >= enemy.NextShot)
             {
+                var fireVector = MathHelper.AngleToVector(facing, bulletSpeed);
                 var bullet = new GameObject(enemy.Position) 
                 {
-                    Sprites = [new SpriteNode(_juicyCM.Sprites["bullet"], "bullet") { FrameRatio = 0.5f }],
+                    Sprites = [_juicyCM.GenerateSprite("spritesheet", "bullet")],
                     Colliders = [new ColliderNode(-3, -3, 6, 6)],
-                    Velocity = MathHelper.AngleToVector(facing, bulletSpeed),
+                    Velocity = fireVector,
                 };
+                bullet.Sprites[0].FrameRatio = 0.5f;
                 bullets.Add(bullet);
                 enemy.NextShot = frameNumber + Enemy.ShotDelay;
+                var muzzleFlash = new Particle(enemy.Position + Vector2.Normalize(fireVector) * 10)
+                {
+                    Sprites = [_juicyCM.GenerateSprite("spritesheet", "muzzle flash" + JuicyContentManager.DirectionString(directionNames, facing))],
+                };
+                particles.Add(muzzleFlash);
             }
         }
 
@@ -422,7 +411,7 @@ public class Game1 : Game
             var spawnDirection = random.NextSingle() * MathF.PI * 2;
             var enemy = new Enemy(MathHelper.AngleToVector(spawnDirection, _camera.Size.X) + _camera.GameRect.Center.ToVector2())
             {
-                Sprites = [new SpriteNode(_juicyCM.Sprites["enemy"], JuicyContentManager.DirectionString(directionNames, facing))],
+                Sprites = [_juicyCM.GenerateSprite("spritesheet", "enemy" + JuicyContentManager.DirectionString(directionNames, facing))],
                 Colliders = [new ColliderNode(-8, -8, 16, 16)]
             };
             enemies.Add(enemy);
@@ -495,7 +484,7 @@ public class Game1 : Game
         {
             var particle = particles[i];
             particle.Update(null, frameNumber, _inputManager.InputState);
-            if (particle.Lifetime <= 0)
+            if (particle.Sprites[0].AnimationOver)
             {
                 particles.Remove(particle);
             }
@@ -506,22 +495,25 @@ public class Game1 : Game
     {
         for (int k = 0; k < 6; k++)
         {
-            particles.Add(new Particle(position + MathHelper.AngleToVector(k * MathF.PI / 3, 12))
+            var particle = new Particle(position + MathHelper.AngleToVector(k * MathF.PI / 3, 12))
             {
-                Sprites = [new SpriteNode(_juicyCM.Sprites["explosion"], "explosion") { FrameRatio = 0.5f, FrameIndex = random.Next(0, 2) }],
-                Lifetime = _juicyCM.Sprites["explosion"].Animations["explosion"].Length * 2,
+                Sprites = [_juicyCM.GenerateSprite("spritesheet", "explosion")],
                 Velocity = new(0, -random.NextSingle() - 1),
-            });
+            };
+            particle.Sprites[0].FrameRatio = 0.5f;
+            particle.Sprites[0].FrameIndex = random.Next(0, 2);
+            particles.Add(particle);
         }
         for (int i = 0; i < 10; i++)
         {
             MakeSpark(position, random.NextSingle() * MathF.PI * 2);
         }
-        particles.Add(new Particle(position)
+        var flash = new Particle(position)
         { 
-            Sprites = [new SpriteNode(_juicyCM.Sprites["explosion flash"], "explosion flash") { FrameRatio = 0.5f }],
-            Lifetime = _juicyCM.Sprites["explosion flash"].Animations["explosion flash"].Length * 2,
-        });
+            Sprites = [_juicyCM.GenerateSprite("spritesheet", "explosion flash")],
+        };
+        flash.Sprites[0].FrameRatio = 0.5f;
+        particles.Add(flash);
     }
 
     private void MakeSpark(Vector2 position, float direction)
@@ -529,8 +521,7 @@ public class Game1 : Game
         var dirString = JuicyContentManager.DirectionString(slopeNames, direction);
         particles.Add(new Particle(position)
         {
-            Sprites = [new SpriteNode(_juicyCM.Sprites["spark"], dirString)],
-            Lifetime = _juicyCM.Sprites["spark"].Animations[dirString].Length,
+            Sprites = [_juicyCM.GenerateSprite("spritesheet", "spark " + dirString)],
             Velocity = MathHelper.AngleToVector(direction, 3),
         });
     }
@@ -540,7 +531,7 @@ public class Game1 : Game
         lives -= 1;
         freezeFrames = 30;
         iFramesEnd = frameNumber + 120;
-        Explode(ship.Position);
+        willExplode = true;
         if (lives <= 0)
         {
             gameState = GameState.GameOver;
@@ -576,7 +567,7 @@ public class Game1 : Game
             {
                 shot.Draw(null, _camera, Vector2.Zero);
             }
-            if (frameNumber > iFramesEnd || frameNumber % 20 < 10)
+            if (freezeFrames > 0 || frameNumber > iFramesEnd || frameNumber % 20 < 10)
                 ship.Draw(null, _camera, Vector2.Zero);
             // _camera.Draw(_whitePixel, new Rectangle((ship.Position + ship.Colliders[0].Position).ToPoint(), ship.Colliders[0].Dimensions.ToPoint()), Color.Red);
         }

@@ -45,6 +45,7 @@ public class Game1 : Game
     private Camera _camera, _guiCamera;
     private RasterizerState _rasterizerState;
     private readonly InputManager _inputManager;
+    private readonly ActionScheduleManager _asm;
     private readonly Random random;
 
     private KeyboardState _prevKeyboardState;
@@ -60,7 +61,6 @@ public class Game1 : Game
 
     private GameObject ship;
     private float prevFacing, shipSpeed, facing;
-    private bool willExplode;
 
     private List<GameObject> shots;
     private float shotSpeed;
@@ -89,6 +89,7 @@ public class Game1 : Game
 
         _inputManager = new(InputMode.KeyboardOnly, Enum.GetValues(typeof(InputSignal)).Length);
         _juicyCM = new();
+        _asm = new();
         random = new();
     }
 
@@ -211,6 +212,9 @@ public class Game1 : Game
             return;
         }
 
+        //handle any scheduled actions
+        _asm.Update(frameNumber);
+
         //handle game states
         if (gameState == GameState.Title)
         {
@@ -257,13 +261,6 @@ public class Game1 : Game
 
     private void UpdatePlayer(InputState inputState)
     {
-        //create an explosion if the player was hit on the last frame
-        if (willExplode)
-        {
-            Explode(ship.Position);
-            willExplode = false;
-        }
-
         //movement
         Vector2 moveVector = new(
             inputState.GetInput((int)InputSignal.HorizontalMovement),
@@ -381,7 +378,7 @@ public class Game1 : Game
             if (PlayerVulnerable
             && CollisionManager.CheckCollisionSimple(ship.Colliders[0], enemy.Colliders[0], ship.Position, enemy.Position))
             {
-                enemies.Remove(enemy);
+                _asm.ScheduleAction(frameNumber + 1, () => enemies.Remove(enemy));
                 HitPlayer();
             }
 
@@ -472,7 +469,7 @@ public class Game1 : Game
             if (PlayerVulnerable
             && CollisionManager.CheckCollisionSimple(ship.Colliders[0], bullet.Colliders[0], ship.Position, bullet.Position))
             {
-                bullets.Remove(bullet);
+                _asm.ScheduleAction(frameNumber + 1, () => bullets.Remove(bullet));
                 HitPlayer();
             }
         }
@@ -531,11 +528,14 @@ public class Game1 : Game
         lives -= 1;
         freezeFrames = 30;
         iFramesEnd = frameNumber + 120;
-        willExplode = true;
-        if (lives <= 0)
-        {
-            gameState = GameState.GameOver;
-        }
+        //schedule an explosion for next frame so that we can see the bullet and the ship during the freeze frame
+        _asm.ScheduleAction(frameNumber + 1, () => {
+            Explode(ship.Position);
+            if (lives <= 0)
+            {
+                gameState = GameState.GameOver;
+            }
+        });
     }
 
     protected override void Draw(GameTime gameTime)

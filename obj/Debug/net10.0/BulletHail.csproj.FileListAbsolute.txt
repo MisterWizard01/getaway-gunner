@@ -1,0 +1,47 @@
+C:\Users\gcagl\source\repos\getaway-gunner\bin\Debug\net10.0\Content\basically aseprite.xnb
+C:\Users\gcagl\source\repos\getaway-gunner\bin\Debug\net10.0\Content\betterBlend.xnb
+C:\Users\gcagl\source\repos\getaway-gunner\bin\Debug\net10.0\Content\blocky sans.xnb
+C:\Users\gcagl\source\repos\getaway-gunner\bin\Debug\net10.0\Content\grayscale.xnb
+C:\Users\gcagl\source\repos\getaway-gunner\bin\Debug\net10.0\Content\mostly sans.xnb
+C:\Users\gcagl\source\repos\getaway-gunner\bin\Debug\net10.0\Content\silhouette.xnb
+C:\Users\gcagl\source\repos\getaway-gunner\bin\Debug\net10.0\Content\spritesheet.xnb
+C:\Users\gcagl\source\repos\getaway-gunner\bin\Debug\net10.0\Content\tiny mono.xnb
+C:\Users\gcagl\source\repos\getaway-gunner\bin\Debug\net10.0\BulletHail.exe
+C:\Users\gcagl\source\repos\getaway-gunner\bin\Debug\net10.0\BulletHail.deps.json
+C:\Users\gcagl\source\repos\getaway-gunner\bin\Debug\net10.0\BulletHail.runtimeconfig.json
+C:\Users\gcagl\source\repos\getaway-gunner\bin\Debug\net10.0\BulletHail.dll
+C:\Users\gcagl\source\repos\getaway-gunner\bin\Debug\net10.0\BulletHail.pdb
+C:\Users\gcagl\source\repos\getaway-gunner\bin\Debug\net10.0\MonoGame.Framework.dll
+C:\Users\gcagl\source\repos\getaway-gunner\bin\Debug\net10.0\Newtonsoft.Json.dll
+C:\Users\gcagl\source\repos\getaway-gunner\bin\Debug\net10.0\NVorbis.dll
+C:\Users\gcagl\source\repos\getaway-gunner\bin\Debug\net10.0\runtimes\android-arm\native\libopenal.so
+C:\Users\gcagl\source\repos\getaway-gunner\bin\Debug\net10.0\runtimes\android-arm64\native\libopenal.so
+C:\Users\gcagl\source\repos\getaway-gunner\bin\Debug\net10.0\runtimes\android-x64\native\libopenal.so
+C:\Users\gcagl\source\repos\getaway-gunner\bin\Debug\net10.0\runtimes\android-x86\native\libopenal.so
+C:\Users\gcagl\source\repos\getaway-gunner\bin\Debug\net10.0\runtimes\ios-arm64\native\libopenal.a
+C:\Users\gcagl\source\repos\getaway-gunner\bin\Debug\net10.0\runtimes\iossimulator-arm64\native\libopenal.a
+C:\Users\gcagl\source\repos\getaway-gunner\bin\Debug\net10.0\runtimes\iossimulator-x64\native\libopenal.a
+C:\Users\gcagl\source\repos\getaway-gunner\bin\Debug\net10.0\runtimes\linux-arm64\native\libopenal.so
+C:\Users\gcagl\source\repos\getaway-gunner\bin\Debug\net10.0\runtimes\linux-x64\native\libopenal.so
+C:\Users\gcagl\source\repos\getaway-gunner\bin\Debug\net10.0\runtimes\osx\native\libopenal.dylib
+C:\Users\gcagl\source\repos\getaway-gunner\bin\Debug\net10.0\runtimes\win-x64\native\openal.dll
+C:\Users\gcagl\source\repos\getaway-gunner\bin\Debug\net10.0\runtimes\linux-x64\native\libSDL2-2.0.so.0
+C:\Users\gcagl\source\repos\getaway-gunner\bin\Debug\net10.0\runtimes\osx\native\libSDL2-2.0.0.dylib
+C:\Users\gcagl\source\repos\getaway-gunner\bin\Debug\net10.0\runtimes\win-x64\native\SDL2.dll
+C:\Users\gcagl\source\repos\getaway-gunner\bin\Debug\net10.0\Engine.dll
+C:\Users\gcagl\source\repos\getaway-gunner\bin\Debug\net10.0\SpriteBuilder.dll
+C:\Users\gcagl\source\repos\getaway-gunner\bin\Debug\net10.0\Engine.pdb
+C:\Users\gcagl\source\repos\getaway-gunner\bin\Debug\net10.0\SpriteBuilder.pdb
+C:\Users\gcagl\source\repos\getaway-gunner\obj\Debug\net10.0\mgcb.tool.restore
+C:\Users\gcagl\source\repos\getaway-gunner\obj\Debug\net10.0\BulletHail.csproj.AssemblyReference.cache
+C:\Users\gcagl\source\repos\getaway-gunner\obj\Debug\net10.0\BulletHail.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\gcagl\source\repos\getaway-gunner\obj\Debug\net10.0\BulletHail.AssemblyInfoInputs.cache
+C:\Users\gcagl\source\repos\getaway-gunner\obj\Debug\net10.0\BulletHail.AssemblyInfo.cs
+C:\Users\gcagl\source\repos\getaway-gunner\obj\Debug\net10.0\BulletHail.csproj.CoreCompileInputs.cache
+C:\Users\gcagl\source\repos\getaway-gunner\obj\Debug\net10.0\BulletHail.sourcelink.json
+C:\Users\gcagl\source\repos\getaway-gunner\obj\Debug\net10.0\BulletHail.csproj.Up2Date
+C:\Users\gcagl\source\repos\getaway-gunner\obj\Debug\net10.0\BulletHail.dll
+C:\Users\gcagl\source\repos\getaway-gunner\obj\Debug\net10.0\refint\BulletHail.dll
+C:\Users\gcagl\source\repos\getaway-gunner\obj\Debug\net10.0\BulletHail.pdb
+C:\Users\gcagl\source\repos\getaway-gunner\obj\Debug\net10.0\BulletHail.genruntimeconfig.cache
+C:\Users\gcagl\source\repos\getaway-gunner\obj\Debug\net10.0\ref\BulletHail.dll

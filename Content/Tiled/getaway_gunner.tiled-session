@@ -1,0 +1,71 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "mechanical.tsj",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "fileStates": {
+        "Level1.tmj": {
+            "scale": 2,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 155.25,
+                "y": 238.5
+            }
+        },
+        "Level1.tmx": {
+            "scale": 4,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 539.375,
+                "y": 411.375
+            }
+        },
+        "Mechanical.tsj": {
+            "scaleInDock": 4,
+            "scaleInEditor": 8
+        },
+        "Mechanical.tsx": {
+            "scaleInDock": 4,
+            "scaleInEditor": 11
+        },
+        "level1.tmj": {
+            "scale": 3.6255859375,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 121.77342024457255,
+                "y": 102.05246996713893
+            }
+        },
+        "mechanical.tsj": {
+            "scaleInDock": 1,
+            "scaleInEditor": 4
+        }
+    },
+    "last.exportedFilePath": "E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Tiled Stuff",
+    "last.externalTilesetPath": "E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Tiled Stuff",
+    "last.imagePath": "E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content",
+    "map.height": 128,
+    "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
+    "map.lastUsedFormat": "json",
+    "map.tileHeight": 8,
+    "map.tileWidth": 8,
+    "map.width": 128,
+    "openFiles": [
+        "mechanical.tsj",
+        "level1.tmj"
+    ],
+    "project": "getaway_gunner.tiled-project",
+    "recentFiles": [
+        "level1.tmj",
+        "mechanical.tsj",
+        "Level1.tmj",
+        "Mechanical.tsj",
+        "Level1.tmx",
+        "Mechanical.tsx"
+    ],
+    "tileset.lastUsedFormat": "json"
+}

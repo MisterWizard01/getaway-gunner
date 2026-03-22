@@ -45,3 +45,51 @@ C:\Users\gcagl\source\repos\getaway-gunner\obj\Debug\net10.0\refint\BulletHail.d
 C:\Users\gcagl\source\repos\getaway-gunner\obj\Debug\net10.0\BulletHail.pdb
 C:\Users\gcagl\source\repos\getaway-gunner\obj\Debug\net10.0\BulletHail.genruntimeconfig.cache
 C:\Users\gcagl\source\repos\getaway-gunner\obj\Debug\net10.0\ref\BulletHail.dll
+E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\basically aseprite.xnb
+E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\betterBlend.xnb
+E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\blocky sans.xnb
+E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\grayscale.xnb
+E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\mostly sans.xnb
+E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\silhouette.xnb
+E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\spritesheet.xnb
+E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\tiny mono.xnb
+E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\BulletHail.exe
+E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\BulletHail.deps.json
+E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\BulletHail.runtimeconfig.json
+E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\BulletHail.dll
+E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\BulletHail.pdb
+E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\MonoGame.Framework.dll
+E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Newtonsoft.Json.dll
+E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\NVorbis.dll
+E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\runtimes\android-arm\native\libopenal.so
+E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\runtimes\android-arm64\native\libopenal.so
+E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\runtimes\android-x64\native\libopenal.so
+E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\runtimes\android-x86\native\libopenal.so
+E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\runtimes\ios-arm64\native\libopenal.a
+E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\runtimes\iossimulator-arm64\native\libopenal.a
+E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\runtimes\iossimulator-x64\native\libopenal.a
+E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\runtimes\linux-arm64\native\libopenal.so
+E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\runtimes\linux-x64\native\libopenal.so
+E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\runtimes\osx\native\libopenal.dylib
+E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\runtimes\win-x64\native\openal.dll
+E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\runtimes\linux-x64\native\libSDL2-2.0.so.0
+E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\runtimes\osx\native\libSDL2-2.0.0.dylib
+E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\runtimes\win-x64\native\SDL2.dll
+E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Engine.dll
+E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\SpriteBuilder.dll
+E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Engine.pdb
+E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\SpriteBuilder.pdb
+E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\obj\Debug\net10.0\mgcb.tool.restore
+E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\obj\Debug\net10.0\BulletHail.csproj.AssemblyReference.cache
+E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\obj\Debug\net10.0\BulletHail.GeneratedMSBuildEditorConfig.editorconfig
+E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\obj\Debug\net10.0\BulletHail.AssemblyInfoInputs.cache
+E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\obj\Debug\net10.0\BulletHail.AssemblyInfo.cs
+E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\obj\Debug\net10.0\BulletHail.csproj.CoreCompileInputs.cache
+E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\obj\Debug\net10.0\BulletHail.sourcelink.json
+E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\obj\Debug\net10.0\BulletHail.csproj.Up2Date
+E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\obj\Debug\net10.0\BulletHail.dll
+E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\obj\Debug\net10.0\refint\BulletHail.dll
+E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\obj\Debug\net10.0\BulletHail.pdb
+E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\obj\Debug\net10.0\BulletHail.genruntimeconfig.cache
+E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\obj\Debug\net10.0\ref\BulletHail.dll
+e:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\tilesheet.xnb

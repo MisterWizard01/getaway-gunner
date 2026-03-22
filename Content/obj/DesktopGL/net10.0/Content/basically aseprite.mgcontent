@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <SourceFile>C:/Users/gcagl/source/repos/getaway-gunner/Content/basically aseprite.png</SourceFile>
-  <SourceTime>2026-03-12T08:33:48.8921471-04:00</SourceTime>
-  <DestFile>C:/Users/gcagl/source/repos/getaway-gunner/Content/bin/DesktopGL/Content/basically aseprite.xnb</DestFile>
-  <DestTime>2026-03-12T17:24:37.4137377-04:00</DestTime>
+  <SourceFile>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/basically aseprite.png</SourceFile>
+  <SourceTime>2023-08-13T18:35:36.5834199-04:00</SourceTime>
+  <DestFile>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/bin/DesktopGL/Content/basically aseprite.xnb</DestFile>
+  <DestTime>2026-03-15T15:34:30.4794627-04:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2025-06-02T06:31:02-04:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

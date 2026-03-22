@@ -12,6 +12,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using MathHelper = Engine.MathHelper;
+using Engine.JsonConverters;
+using Newtonsoft.Json.Linq;
 
 namespace BulletHail;
 
@@ -46,6 +48,7 @@ public class Game1 : Game
     private RasterizerState _rasterizerState;
     private readonly InputManager _inputManager;
     private readonly ActionScheduleManager _asm;
+    private readonly TiledParser _tiledParser;
     private readonly Random random;
 
     private KeyboardState _prevKeyboardState;
@@ -55,6 +58,7 @@ public class Game1 : Game
     private Effect _betterBlend;
     private Texture2D _whitePixel, _circle16;
 
+    private Node _scene;
     private GameState gameState;
     private bool paused;
     private int score, lives, freezeFrames, iFramesEnd;
@@ -90,6 +94,7 @@ public class Game1 : Game
         _inputManager = new(InputMode.KeyboardOnly, Enum.GetValues(typeof(InputSignal)).Length);
         _juicyCM = new();
         _asm = new();
+        _tiledParser = new();
         random = new();
     }
 
@@ -147,10 +152,9 @@ public class Game1 : Game
         //_silhouetteEffect = Content.Load<Effect>("silhouette");
         _betterBlend = Content.Load<Effect>("betterBlend");
 
-        _juicyCM.LoadTextures(Content, FileManager.GetContentFolder());
+        var contentFolder = FileManager.GetContentFolder();
+        _juicyCM.LoadTextures(Content, contentFolder);
         //_juicyCM.LoadSprites(Path.Combine(FileManager.GetContentFolder(), "sprites/Sprites.json"));
-        //LoadSceneFromTiled(Path.Combine(commonFolder, "tiled\\test.json"));
-        // _background = _juicyCM.Textures["background"];
 
         _juicyCM.GenerateAnimationSet("ship", directionNames, 1, 0, 0, 20, 20, 0, 0, false);
         _juicyCM.GenerateAnimationSet("enemy", directionNames, 1, 0, 20, 22, 22, 0, 0, false);
@@ -177,6 +181,15 @@ public class Game1 : Game
         _juicyCM.Fonts.Add("mostly sans", FontBuilder.BuildFont(_juicyCM.Textures["mostly sans"], new Point(5, 6), new Point(1, 1), ' ', new Point(3, 5)));
         _juicyCM.Fonts.Add("basically aseprite", FontBuilder.BuildFont(_juicyCM.Textures["basically aseprite"], new Point(5, 7), new Point(1, 1), ' ', new Point(4, 6)));
         _juicyCM.Fonts.Add("blocky sans", FontBuilder.BuildFont(_juicyCM.Textures["blocky sans"], new Point(8, 12), new Point(1, 1), ' ', new Point(6, 10)));
+    
+        //load tilesets
+        _juicyCM.LoadTilesets(Path.Combine(contentFolder, "Tiled"));
+
+        //load the scene
+        using StreamReader reader = new(Path.Combine(contentFolder, "Tiled", "level1.tmj"));
+        var json = reader.ReadToEnd();
+        var jObject = JObject.Parse(json);
+        _scene = _tiledParser.ParseMap(_juicyCM, jObject);
     }
 
     protected override void Update(GameTime gameTime)
@@ -550,6 +563,8 @@ public class Game1 : Game
         _spriteBatch.GraphicsDevice.ScissorRectangle = _camera.ViewRect;
 
         _camera.Draw(_whitePixel, _camera.GameRect, new Color(20, 24, 46));
+
+        _scene.Draw(null, _camera, Vector2.Zero);
 
         foreach (var enmey in enemies)
         {

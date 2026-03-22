@@ -4,16 +4,18 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Users/gcagl/source/repos/getaway-gunner/Content/basically aseprite.png</File>
-    <File>C:/Users/gcagl/source/repos/getaway-gunner/Content/betterBlend.fx</File>
-    <File>C:/Users/gcagl/source/repos/getaway-gunner/Content/blocky sans.png</File>
-    <File>C:/Users/gcagl/source/repos/getaway-gunner/Content/grayscale.fx</File>
-    <File>C:/Users/gcagl/source/repos/getaway-gunner/Content/mostly sans.png</File>
-    <File>C:/Users/gcagl/source/repos/getaway-gunner/Content/silhouette.fx</File>
-    <File>C:/Users/gcagl/source/repos/getaway-gunner/Content/spritesheet.png</File>
-    <File>C:/Users/gcagl/source/repos/getaway-gunner/Content/tiny mono.png</File>
+    <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/basically aseprite.png</File>
+    <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/betterBlend.fx</File>
+    <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/blocky sans.png</File>
+    <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/grayscale.fx</File>
+    <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/mostly sans.png</File>
+    <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/silhouette.fx</File>
+    <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/spritesheet.png</File>
+    <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/tilesheet.png</File>
+    <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/tiny mono.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

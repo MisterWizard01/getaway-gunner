@@ -11,9 +11,11 @@
     <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/mostly sans.png</File>
     <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/silhouette.fx</File>
     <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/spritesheet.png</File>
+    <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/tilesheet.png</File>
     <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/tiny mono.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

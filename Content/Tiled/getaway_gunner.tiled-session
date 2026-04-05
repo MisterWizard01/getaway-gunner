@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "mechanical.tsj",
+    "activeFile": "level4.tmj",
     "expandedProjectPaths": [
         "."
     ],
@@ -32,40 +32,121 @@
             "scaleInDock": 4,
             "scaleInEditor": 11
         },
+        "cross5.tmj": {
+            "scale": 3,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 143.33333333333331,
+                "y": 97.66666666666669
+            }
+        },
         "level1.tmj": {
-            "scale": 3.6255859375,
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 3,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 146.66666666666669,
+                "y": 110.33333333333331
+            }
+        },
+        "level2.tmj": {
+            "expandedObjectLayers": [
+                3
+            ],
+            "scale": 3,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 139.66666666666669,
+                "y": 119.33333333333331
+            }
+        },
+        "level3.tmj": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 3,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 146.66666666666669,
+                "y": 110.33333333333331
+            }
+        },
+        "level34tmj.tmj": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 3,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 121.77342024457255,
-                "y": 102.05246996713893
+                "x": 149.99999999999997,
+                "y": 92.33333333333331
+            }
+        },
+        "level4.tmj": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 3,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 151.66666666666669,
+                "y": 119.66666666666669
             }
         },
         "mechanical.tsj": {
-            "scaleInDock": 1,
+            "scaleInDock": 3,
             "scaleInEditor": 4
+        },
+        "sprites.tsj": {
+            "scaleInDock": 3,
+            "scaleInEditor": 11
+        },
+        "test_level.tmj": {
+            "expandedObjectLayers": [
+                2,
+                5
+            ],
+            "scale": 0.75,
+            "selectedLayer": 4,
+            "viewCenter": {
+                "x": 487.99999999999994,
+                "y": 406.66666666666674
+            }
         }
     },
     "last.exportedFilePath": "E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Tiled Stuff",
     "last.externalTilesetPath": "E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Tiled Stuff",
     "last.imagePath": "E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content",
-    "map.height": 128,
+    "map.height": 24,
     "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
     "map.lastUsedFormat": "json",
     "map.tileHeight": 8,
     "map.tileWidth": 8,
-    "map.width": 128,
+    "map.width": 32,
     "openFiles": [
-        "mechanical.tsj",
-        "level1.tmj"
+        "level4.tmj"
     ],
     "project": "getaway_gunner.tiled-project",
+    "property.type": "string",
     "recentFiles": [
-        "level1.tmj",
+        "cross5.tmj",
+        "level4.tmj",
+        "level34tmj.tmj",
+        "level2.tmj",
         "mechanical.tsj",
+        "sprites.tsj",
+        "test_level.tmj",
+        "level1.tmj",
         "Level1.tmj",
         "Mechanical.tsj",
         "Level1.tmx",
         "Mechanical.tsx"
     ],
-    "tileset.lastUsedFormat": "json"
+    "tileset.lastUsedFormat": "json",
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    }
 }

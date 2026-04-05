@@ -1,0 +1,51 @@
+TODO
+Next up:
+- how to handle enemy spawns?
+- enemy states
+  - avoid walls while chasing
+  - actual patrolling behavior
+- powerup collision with walls
+
+Bugs:
+- jiggedy when running diagonally into walls to the right
+
+Juice:
+- particles	
+  - bullet pop
+- sounds
+- screenshake
+
+Polish:
+- rotation delay
+- flames from ship
+
+Content:
+- levels
+
+Technical:
+- rotate sprites
+
+
+DONE
+- enemy hp
+- text
+- game over screen
+- start screen
+- player death
+- customizable input array
+- shooting with second stick
+- some kind of pickup
+- pickup magnet
+- enemies shooting
+- particles
+  - muzzle flash
+  - shot pop
+  - explosions
+	- flame/smoke
+    - flash (actual sprite, not circle)
+	- sparks
+- auto load tilesets from tsj files
+- load tilelayer directly from tmj file
+- enemy collisions with walls
+- shot collision w walls
+- LoS test

@@ -56,7 +56,7 @@ public class Game1 : Game
     private int frameNumber;
     //private Effect _grayscaleEffect, _silhouetteEffect;
     private Effect _betterBlend;
-    private Texture2D _whitePixel, _circle16;
+    private Texture2D _whitePixel;
 
     private Node _scene;
     private GameState gameState;
@@ -72,12 +72,15 @@ public class Game1 : Game
 
     private List<Enemy> enemies;
     private int nextEnemy, enemyDelay, enemySpeed; 
+    private List<Vector2> possibleSpawnLocations;
 
     private List<GameObject> pickups;
     private int pickupTime;
 
     private List<GameObject> bullets;
     private float bulletSpeed;
+
+    private List<ColliderNode> walls;
     
     private List<Particle> particles;
 
@@ -91,7 +94,7 @@ public class Game1 : Game
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
 
-        _inputManager = new(InputMode.KeyboardOnly, Enum.GetValues(typeof(InputSignal)).Length);
+        _inputManager = new(InputMode.KeyboardOnly, Enum.GetValues<InputSignal>().Length);
         _juicyCM = new();
         _asm = new();
         _tiledParser = new();
@@ -118,7 +121,7 @@ public class Game1 : Game
         ship = new GameObject(_camera.GameRect.Center.ToVector2())
         {
             Sprites = [new SpriteNode(_juicyCM.Textures["spritesheet"], _juicyCM.Animations["shipright"])],
-            Colliders = [new ColliderNode(-3, -3, 6, 6)],
+            Colliders = [new ColliderNode(0, 0, 6, 6)],
         };
         prevFacing = 0;
         shipSpeed = 2;
@@ -136,6 +139,8 @@ public class Game1 : Game
         bullets = [];
         bulletSpeed = 3;
 
+        // walls = [];
+
         particles = [];
     }
 
@@ -145,8 +150,6 @@ public class Game1 : Game
 
         _whitePixel = new Texture2D(GraphicsDevice, 1, 1);
         _whitePixel.SetData([Color.White]);
-
-        _circle16 = JuicyContentManager.GenerateCircleTexture(GraphicsDevice, 16, Color.White);
 
         //_grayscaleEffect = Content.Load<Effect>("grayscale");
         //_silhouetteEffect = Content.Load<Effect>("silhouette");
@@ -186,10 +189,26 @@ public class Game1 : Game
         _juicyCM.LoadTilesets(Path.Combine(contentFolder, "Tiled"));
 
         //load the scene
-        using StreamReader reader = new(Path.Combine(contentFolder, "Tiled", "level1.tmj"));
+        using StreamReader reader = new(Path.Combine(contentFolder, "Tiled", "test_level.tmj"));
         var json = reader.ReadToEnd();
         var jObject = JObject.Parse(json);
         _scene = _tiledParser.ParseMap(_juicyCM, jObject);
+
+        walls = [];
+        for(var i = 0; i < _scene.GetChild("Walls").CountChildren; i++)
+        {
+            var wall = _scene.GetChild("Walls").GetChild(i) as ColliderNode;
+            if (wall is not null)
+                walls.Add(wall);
+        }
+
+        possibleSpawnLocations = [];
+        for(var i = 0; i < _scene.GetChild("Enemy spawns").CountChildren; i++)
+        {
+            var spawnPoint = _scene.GetChild("Enemy spawns").GetChild(i) as Node2D;
+            if (spawnPoint is not null)
+                possibleSpawnLocations.Add(spawnPoint.Position);
+        }
     }
 
     protected override void Update(GameTime gameTime)
@@ -240,7 +259,7 @@ public class Game1 : Game
         else if (gameState == GameState.GameOver)
         {
             UpdateBullets();
-            UpdateEnemies();
+            UpdateEnemies(inputState);
             if (inputState.GetInput((int)InputSignal.Accept) > 0)
             {
                 //reset game
@@ -259,7 +278,7 @@ public class Game1 : Game
         {
             UpdatePlayer(inputState);
             UpdateBullets();
-            UpdateEnemies();
+            UpdateEnemies(inputState);
             UpdatePickups(inputState);
         }
         UpdateParticles();
@@ -295,7 +314,20 @@ public class Game1 : Game
                 ship.Y = MathF.Round(ship.Y);
             }
         }
+        ship.Update(null, frameNumber, inputState); // this sets the previousPosition value to the current position
         ship.Position += moveVector * shipSpeed;
+
+        //wall collisions
+        foreach (var wall in walls)
+        {
+            var collision = CollisionManager.CheckCollision(ship.Colliders[0], wall, ship.Position, Vector2.Zero, ship.PreviousPosition, Vector2.Zero);
+            if (collision is not null)
+            {
+                var response = CollisionManager.HandleSolidCollision(collision.Value);
+                ship.Position += response;
+            }
+        }
+        _camera.Position = ship.Position.ToPoint() - _camera.Size / new Point(2);
 
         //shooting
         Vector2 fireVector = new(
@@ -314,7 +346,7 @@ public class Game1 : Game
                     var shot = new GameObject(ship.Position)
                     {
                         Sprites = [_juicyCM.GenerateSprite("spritesheet", "shot" + JuicyContentManager.DirectionString(directionNames, facing))],
-                        Colliders = [new ColliderNode(-4, -4, 8, 8)],
+                        Colliders = [new ColliderNode(0, 0, 8, 8)],
                         Velocity = MathHelper.AngleToVector(facing + i * MathF.PI / 12, shotSpeed),
                     };
                     shots.Add(shot);
@@ -333,27 +365,114 @@ public class Game1 : Game
         {
             var shot = shots[i];
             shot.Position += shot.Velocity;
-            if (shot.X < -8 || shot.Y < -8 || shot.X > _camera.Size.X + 8 || shot.Y > _camera.Size.Y + 8)
+            // if (shot.X < -8 || shot.Y < -8 || shot.X > _camera.Size.X + 8 || shot.Y > _camera.Size.Y + 8)
+            // {
+            //     shots.Remove(shot);
+            // }
+            foreach (var wall in walls)
             {
-                shots.Remove(shot);
+                if (CollisionManager.CheckCollisionSimple(shot.Colliders[0], wall, shot.Position, Vector2.Zero))
+                {
+                    shots.Remove(shot);
+                    particles.Add(new Particle(shot.Position)
+                    {
+                        Sprites = [_juicyCM.GenerateSprite("spritesheet", "shot pop")],
+                    });
+                }
             }
         }
     }
 
-    private void UpdateEnemies()
+    private void UpdateEnemies(InputState inputState)
     {
         for (int i = enemies.Count - 1; i >= 0; i--)
         {
             var enemy = enemies[i];
-            var vector = ship.Position - enemy.Position;
-            var facing = MathHelper.VectorToAngle(vector);
-            if (vector.LengthSquared() > 64 * 64)
+            var los = CheckLoS(enemy.Position, ship.Position, walls);
+            if (los)
             {
-                vector.Normalize();
-                facing = MathHelper.Snap(facing, MathF.PI / 4);
-                enemy.Position += MathHelper.AngleToVector(facing, enemySpeed);
+                enemy.target = ship.Position;
             }
-            _juicyCM.SetSpriteAnimation(enemy.Sprites[0], "enemy" + JuicyContentManager.DirectionString(directionNames, facing));
+            var targetVector = enemy.target - enemy.Position;
+            var facing = MathHelper.VectorToAngle(targetVector);
+            switch (enemy.state)
+            {
+                case EnemyState.Patrolling:
+                    enemy.Update(null, frameNumber, inputState);
+                    if (enemy.X % 8 == 0)
+                    {
+                        if (enemy.Y % 8 == 0)
+                        {
+                            enemy.Velocity = PickRandomVelocity();
+                        }
+                        else
+                        {
+                            enemy.Velocity.X = 0;
+                        }
+                    }
+                    else
+                    {
+                        enemy.Velocity.Y = 0;
+                    }
+                    if (los)
+                    {
+                        enemy.state = EnemyState.Chasing;
+                    }
+                    break;
+
+                case EnemyState.Chasing:
+                    if (targetVector.LengthSquared() < enemySpeed * enemySpeed)
+                    {
+                        enemy.state = EnemyState.Patrolling;
+                    }
+                    else if (los && (ship.Position - enemy.Position).LengthSquared() < 64 * 64)
+                    {
+                        enemy.state = EnemyState.Attacking;
+                    }
+                    else
+                    {
+                        targetVector.Normalize();
+                        facing = MathHelper.Snap(facing, MathF.PI / 4);
+                        enemy.Velocity = MathHelper.AngleToVector(facing, enemySpeed);
+                        enemy.Update(null, frameNumber, inputState);
+                        _juicyCM.SetSpriteAnimation(enemy.Sprites[0], "enemy" + JuicyContentManager.DirectionString(directionNames, facing));
+                    }
+                    break;
+
+                case EnemyState.Attacking:
+                    //enemy shooting
+                    if (frameNumber >= enemy.NextShot)
+                    {
+                        var fireVector = MathHelper.AngleToVector(facing, bulletSpeed);
+                        var bullet = new GameObject(enemy.Position) 
+                        {
+                            Sprites = [_juicyCM.GenerateSprite("spritesheet", "bullet")],
+                            Colliders = [new ColliderNode(-3, -3, 6, 6)],
+                            Velocity = fireVector,
+                        };
+                        bullet.Sprites[0].FrameRatio = 0.5f;
+                        bullets.Add(bullet);
+                        enemy.NextShot = frameNumber + Enemy.ShotDelay;
+                        var muzzleFlash = new Particle(enemy.Position + Vector2.Normalize(fireVector) * 10)
+                        {
+                            Sprites = [_juicyCM.GenerateSprite("spritesheet", "muzzle flash" + JuicyContentManager.DirectionString(directionNames, facing))],
+                        };
+                        particles.Add(muzzleFlash);
+                        enemy.state = EnemyState.Chasing;
+                    }
+                    break;
+            }
+
+            //enemy collision w walls
+            foreach (var wall in walls)
+            {
+                var collision = CollisionManager.CheckCollision(enemy.Colliders[0], wall, enemy.Position, Vector2.Zero, enemy.PreviousPosition, Vector2.Zero);
+                if (collision is not null)
+                {
+                    var response = CollisionManager.HandleSolidCollision(collision.Value);
+                    enemy.Position += response;
+                }
+            }
 
             //enemy collision w shots
             var dead = false;
@@ -394,39 +513,30 @@ public class Game1 : Game
                 _asm.ScheduleAction(frameNumber + 1, () => enemies.Remove(enemy));
                 HitPlayer();
             }
-
-            //enemy shooting
-            if (frameNumber >= enemy.NextShot)
-            {
-                var fireVector = MathHelper.AngleToVector(facing, bulletSpeed);
-                var bullet = new GameObject(enemy.Position) 
-                {
-                    Sprites = [_juicyCM.GenerateSprite("spritesheet", "bullet")],
-                    Colliders = [new ColliderNode(-3, -3, 6, 6)],
-                    Velocity = fireVector,
-                };
-                bullet.Sprites[0].FrameRatio = 0.5f;
-                bullets.Add(bullet);
-                enemy.NextShot = frameNumber + Enemy.ShotDelay;
-                var muzzleFlash = new Particle(enemy.Position + Vector2.Normalize(fireVector) * 10)
-                {
-                    Sprites = [_juicyCM.GenerateSprite("spritesheet", "muzzle flash" + JuicyContentManager.DirectionString(directionNames, facing))],
-                };
-                particles.Add(muzzleFlash);
-            }
         }
 
         if (frameNumber >= nextEnemy)
         {
-            var spawnDirection = random.NextSingle() * MathF.PI * 2;
-            var enemy = new Enemy(MathHelper.AngleToVector(spawnDirection, _camera.Size.X) + _camera.GameRect.Center.ToVector2())
+            var enemy = new Enemy(possibleSpawnLocations[random.Next(possibleSpawnLocations.Count)])
             {
                 Sprites = [_juicyCM.GenerateSprite("spritesheet", "enemy" + JuicyContentManager.DirectionString(directionNames, facing))],
-                Colliders = [new ColliderNode(-8, -8, 16, 16)]
+                Colliders = [new ColliderNode(0, 0, 16, 16)],
+                Velocity = PickRandomVelocity(),
             };
             enemies.Add(enemy);
             nextEnemy = frameNumber + enemyDelay;
         }
+    }
+
+    private Vector2 PickRandomVelocity()
+    {
+        var possibleVelocities = new Vector2[] {
+            new (enemySpeed, 0),
+            new (0, enemySpeed),
+            new (-enemySpeed, 0),
+            new (0, -enemySpeed),
+        };
+        return possibleVelocities[random.Next(possibleVelocities.Length)];
     }
 
     private void UpdatePickups(InputState inputState)
@@ -472,11 +582,22 @@ public class Game1 : Game
         {
             var bullet = bullets[i];
             bullet.Update(null, frameNumber, _inputManager.InputState);
-            if (bullet.X < -8 || bullet.Y < -8 || bullet.X > _camera.Size.X + 8 || bullet.Y > _camera.Size.Y + 8)
+            
+            //wall collisions
+            foreach (var wall in walls)
             {
-                bullets.Remove(bullet);
-                continue;
+                if (CollisionManager.CheckCollisionSimple(bullet.Colliders[0], wall, bullet.Position, Vector2.Zero))
+                {
+                    bullets.Remove(bullet);
+                    break;
+                }
             }
+
+            // if (bullet.X < -8 || bullet.Y < -8 || bullet.X > _camera.Size.X + 8 || bullet.Y > _camera.Size.Y + 8)
+            // {
+            //     bullets.Remove(bullet);
+            //     continue;
+            // }
 
             //bullet collision w player
             if (PlayerVulnerable
@@ -551,6 +672,16 @@ public class Game1 : Game
         });
     }
 
+    private static bool CheckLoS(Vector2 a, Vector2 b, List<ColliderNode> colliders)
+    {
+        foreach (var collider in colliders)
+        {
+            if (CollisionManager.CheckCollisionLine(collider, Vector2.Zero, a, b))
+                return false;
+        }
+        return true;
+    }
+
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.Black);
@@ -566,9 +697,14 @@ public class Game1 : Game
 
         _scene.Draw(null, _camera, Vector2.Zero);
 
-        foreach (var enmey in enemies)
+        foreach (var enemy in enemies)
         {
-            enmey.Draw(null, _camera, Vector2.Zero);
+            enemy.Draw(null, _camera, Vector2.Zero);
+            // DrawCollider(_camera, enemy.Colliders[0], Color.Red, enemy.Position);
+            var color = Color.White;
+            if (CheckLoS(enemy.Position, ship.Position, walls))
+                color = Color.Red;
+            // DrawLine(_camera, enemy.Position, ship.Position, color);
         }
 
         foreach (var pickup in pickups)
@@ -581,11 +717,17 @@ public class Game1 : Game
             foreach (var shot in shots)
             {
                 shot.Draw(null, _camera, Vector2.Zero);
+                // DrawCollider(_camera, shot.Colliders[0], Color.Blue, shot.Position);
             }
             if (freezeFrames > 0 || frameNumber > iFramesEnd || frameNumber % 20 < 10)
                 ship.Draw(null, _camera, Vector2.Zero);
-            // _camera.Draw(_whitePixel, new Rectangle((ship.Position + ship.Colliders[0].Position).ToPoint(), ship.Colliders[0].Dimensions.ToPoint()), Color.Red);
+            // DrawCollider(_camera, ship.Colliders[0], Color.Blue, ship.Position);
         }
+
+        // foreach (var wall in walls)
+        // {
+        //     DrawCollider(_camera, wall, Color.White, Vector2.Zero);
+        // }
 
         foreach (var particle in particles)
         {
@@ -607,21 +749,39 @@ public class Game1 : Game
 
         if (gameState == GameState.Title)
         {
-            _camera.DrawString(_juicyCM.Fonts["blocky sans"], "Bullet Hail", _camera.GameRect.Center.ToVector2(), Color.White, TextHorizontal.CenterAligned, TextVertical.BottomAligned);
-            _camera.DrawString(_juicyCM.Fonts["mostly sans"], "Press A to start", _camera.GameRect.Center.ToVector2(), Color.White, TextHorizontal.CenterAligned, TextVertical.TopAligned);
+            _guiCamera.DrawString(_juicyCM.Fonts["blocky sans"], "Bullet Hail", _guiCamera.GameRect.Center.ToVector2(), Color.White, TextHorizontal.CenterAligned, TextVertical.BottomAligned);
+            _guiCamera.DrawString(_juicyCM.Fonts["mostly sans"], "Press A to start", _guiCamera.GameRect.Center.ToVector2(), Color.White, TextHorizontal.CenterAligned, TextVertical.TopAligned);
         }
         else if (gameState == GameState.GameOver)
         {
-            _camera.DrawString(_juicyCM.Fonts["blocky sans"], "Game Over", _camera.GameRect.Center.ToVector2(), Color.White, TextHorizontal.CenterAligned, TextVertical.BottomAligned);
-            _camera.DrawString(_juicyCM.Fonts["mostly sans"], "Press A to restart", _camera.GameRect.Center.ToVector2(), Color.White, TextHorizontal.CenterAligned, TextVertical.TopAligned);
+            _guiCamera.DrawString(_juicyCM.Fonts["blocky sans"], "Game Over", _guiCamera.GameRect.Center.ToVector2(), Color.White, TextHorizontal.CenterAligned, TextVertical.BottomAligned);
+            _guiCamera.DrawString(_juicyCM.Fonts["mostly sans"], "Press A to restart", _guiCamera.GameRect.Center.ToVector2(), Color.White, TextHorizontal.CenterAligned, TextVertical.TopAligned);
         }
 
-        _camera.DrawString(_juicyCM.Fonts["blocky sans"], "Score: " + score, new Vector2(1), Color.White);
-        _camera.DrawString(_juicyCM.Fonts["blocky sans"], "Lives: " + lives, new Vector2(_camera.GameRect.Width - 1, 1), Color.White, TextHorizontal.RightAligned);
+        _guiCamera.DrawString(_juicyCM.Fonts["blocky sans"], "Score: " + score, new Vector2(1), Color.White);
+        _guiCamera.DrawString(_juicyCM.Fonts["blocky sans"], "Lives: " + lives, new Vector2(_guiCamera.GameRect.Width - 1, 1), Color.White, TextHorizontal.RightAligned);
         
         //_spriteBatch.Draw(_juicyCM.Textures["spritesheet"], _camera.ViewRect, new Rectangle(0, 0, 160, 20), Color.Transparent);
         _spriteBatch.End();
         base.Draw(gameTime);
+    }
+
+    private void DrawCollider(Camera camera, ColliderNode collider, Color color, Vector2 referencePosition)
+    {
+        camera.Draw(_whitePixel, new Rectangle((referencePosition + collider.Position - collider.Dimensions / 2).ToPoint(), collider.Dimensions.ToPoint()), color);
+    }
+
+    private void DrawLine(Camera camera, Vector2 point1, Vector2 point2, Color color, float thickness = 1f)
+    {
+        var distance = Vector2.Distance(point1, point2);
+        var angle = (float)Math.Atan2(point2.Y - point1.Y, point2.X - point1.X);
+        DrawLine(camera, point1, distance, angle, color, thickness);
+    }
+
+    private void DrawLine(Camera camera, Vector2 point, float length, float angle, Color color, float thickness = 1f)
+    {
+        var scale = new Vector2(length, thickness);
+        camera.Draw(_whitePixel, new(point.ToPoint(), scale.ToPoint()), color, angle);
     }
 
     protected void ToggleFullScreen()
@@ -650,6 +810,7 @@ public class Game1 : Game
         Point size = new(_camera.GameRect.Width * scale, _camera.GameRect.Height * scale);
         Point location = new((Window.ClientBounds.Width - size.X) / 2, (Window.ClientBounds.Height - size.Y) / 2);
         _camera.ViewRect = new Rectangle(location, size);
+        _guiCamera.ViewRect = new Rectangle(location, size);
     }
 
     public static void DefaultControls(InputManager inputManager)

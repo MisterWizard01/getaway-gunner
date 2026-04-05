@@ -1,0 +1,22 @@
+{ "columns":32,
+ "image":"..\/spritesheet.png",
+ "imageheight":512,
+ "imagewidth":512,
+ "margin":0,
+ "name":"sprites",
+ "objectalignment":"center",
+ "spacing":0,
+ "tilecount":1024,
+ "tiledversion":"1.10.1",
+ "tileheight":16,
+ "tilewidth":16,
+ "transformations":
+    {
+     "hflip":false,
+     "preferuntransformed":true,
+     "rotate":false,
+     "vflip":false
+    },
+ "type":"tileset",
+ "version":"1.10"
+}

@@ -36,20 +36,21 @@ enum InputSignal
 
 public class Game1 : Game
 {
+    #region Fields and Properties
     public readonly float TanPiOver8 = MathF.Sqrt(2) - 1;
     public readonly string[] directionNames = ["right", "downright", "down", "downleft", "left", "upleft", "up", "upright"];
     public readonly string[] slopeNames = ["horizontal", "shallow negative", "negative diagonal", "steep negative", "vertical", "steep positive", "positive diagonal", "shallow positive",
                                            "horizontal", "shallow negative", "negative diagonal", "steep negative", "vertical", "steep positive", "positive diagonal", "shallow positive"];
     
-    private GraphicsDeviceManager _graphics;
+    private readonly GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
-    private JuicyContentManager _juicyCM;
+    private readonly JuicyContentManager _juicyCM;
     private Camera _camera, _guiCamera;
     private RasterizerState _rasterizerState;
     private readonly InputManager _inputManager;
     private readonly ActionScheduleManager _asm;
-    private readonly TiledParser _tiledParser;
-    private readonly Random random;
+    private readonly CustomTiledParser _tiledParser;
+    private static Random random;
 
     private KeyboardState _prevKeyboardState;
     private GamePadState _previousGamePadState;
@@ -58,7 +59,12 @@ public class Game1 : Game
     private Effect _betterBlend;
     private Texture2D _whitePixel;
 
-    private Node _scene;
+    private List<Room> roomPool;
+    private Room[] level;
+    private readonly int levelWidth = 7, levelHeight = 7;
+    private int currentCell;
+    private Room currentRoom;
+
     private GameState gameState;
     private bool paused;
     private int score, lives, freezeFrames, iFramesEnd;
@@ -70,21 +76,19 @@ public class Game1 : Game
     private float shotSpeed;
     private int nextShot, shotDelay;
 
-    private List<Enemy> enemies;
-    private int nextEnemy, enemyDelay, enemySpeed; 
-    private List<Vector2> possibleSpawnLocations;
+    public static int nextEnemy, enemyDelay, enemySpeed;
 
     private List<GameObject> pickups;
     private int pickupTime;
 
     private List<GameObject> bullets;
     private float bulletSpeed;
-
-    private List<ColliderNode> walls;
     
     private List<Particle> particles;
 
-    private bool PlayerVulnerable => (lives > 0 && frameNumber > iFramesEnd);
+    private bool PlayerVulnerable => lives > 0 && frameNumber > iFramesEnd;
+    
+    #endregion
 
     public Game1()
     {
@@ -101,6 +105,7 @@ public class Game1 : Game
         random = new();
     }
 
+    #region Startup methods
     protected override void Initialize()
     {
         DefaultControls(_inputManager);
@@ -130,7 +135,6 @@ public class Game1 : Game
         shotSpeed = 8;
         shotDelay = 5;
 
-        enemies = [];
         enemyDelay = 120;
         enemySpeed = 1;
 
@@ -138,8 +142,6 @@ public class Game1 : Game
 
         bullets = [];
         bulletSpeed = 3;
-
-        // walls = [];
 
         particles = [];
     }
@@ -188,28 +190,72 @@ public class Game1 : Game
         //load tilesets
         _juicyCM.LoadTilesets(Path.Combine(contentFolder, "Tiled"));
 
-        //load the scene
-        using StreamReader reader = new(Path.Combine(contentFolder, "Tiled", "test_level.tmj"));
-        var json = reader.ReadToEnd();
-        var jObject = JObject.Parse(json);
-        _scene = _tiledParser.ParseMap(_juicyCM, jObject);
+        //load the rooms
+        roomPool = [
+            _tiledParser.ParseRoom(_juicyCM, Path.Combine(contentFolder, "Tiled", "cross1.tmj")),
+            _tiledParser.ParseRoom(_juicyCM, Path.Combine(contentFolder, "Tiled", "cross2.tmj")),
+            _tiledParser.ParseRoom(_juicyCM, Path.Combine(contentFolder, "Tiled", "cross3.tmj")),
+            _tiledParser.ParseRoom(_juicyCM, Path.Combine(contentFolder, "Tiled", "cross4.tmj")),
+            _tiledParser.ParseRoom(_juicyCM, Path.Combine(contentFolder, "Tiled", "cross5.tmj")),
+            _tiledParser.ParseRoom(_juicyCM, Path.Combine(contentFolder, "Tiled", "cross1.tmj")),
+            _tiledParser.ParseRoom(_juicyCM, Path.Combine(contentFolder, "Tiled", "cross2.tmj")),
+            _tiledParser.ParseRoom(_juicyCM, Path.Combine(contentFolder, "Tiled", "cross3.tmj")),
+            _tiledParser.ParseRoom(_juicyCM, Path.Combine(contentFolder, "Tiled", "cross4.tmj")),
+            _tiledParser.ParseRoom(_juicyCM, Path.Combine(contentFolder, "Tiled", "cross5.tmj")),
+        ];
 
-        walls = [];
-        for(var i = 0; i < _scene.GetChild("Walls").CountChildren; i++)
+        //generate the map
+        var center = levelWidth / 2 + levelHeight / 2 * levelWidth;
+        var map = new bool[49];
+        var frontier = new List<int>() { center }; //add the center cell to the array
+        var roomCount = 0;
+        while (roomCount < 10 && frontier.Count > 0)
         {
-            var wall = _scene.GetChild("Walls").GetChild(i) as ColliderNode;
-            if (wall is not null)
-                walls.Add(wall);
+            //pick a cell that's currently in the frontier
+            var index = random.Next(frontier.Count);
+            var cell = frontier[index];
+            frontier.RemoveAt(index);
+
+            //get the cell's neighbors
+            // 0: invalid location (out of bounds)
+            // 1: valid location
+            // 4: already contains a room
+            var left   = cell % levelWidth == 0 ? 0 : !map[cell - 1] ? 1 : 4;
+            var top    = cell / levelWidth == 0 ? 0 : !map[cell - levelWidth] ? 1 : 4;
+            var right  = cell % levelWidth == levelWidth - 1 ? 0 : !map[cell + 1] ? 1 : 4;
+            var bottom = cell / levelWidth == levelHeight - 1 ? 0 : !map[cell + levelWidth] ? 1 : 4;
+
+            //see if the cell is suitable to be made into a room
+            if (left + right + top + bottom >= 8)
+                continue;
+
+            //create a room to go here
+            map[cell] = true;
+            roomCount++;
+
+            //add neighbors to frontier
+            if (left   == 1) frontier.Add(cell - 1);
+            if (top    == 1) frontier.Add(cell - levelWidth);
+            if (right  == 1) frontier.Add(cell + 1);
+            if (bottom == 1) frontier.Add(cell + levelWidth);
         }
 
-        possibleSpawnLocations = [];
-        for(var i = 0; i < _scene.GetChild("Enemy spawns").CountChildren; i++)
+        //fill the level with rooms according to the map
+        level = new Room[levelWidth * levelHeight];
+        for (int i = 0; i < map.Length; i++)
         {
-            var spawnPoint = _scene.GetChild("Enemy spawns").GetChild(i) as Node2D;
-            if (spawnPoint is not null)
-                possibleSpawnLocations.Add(spawnPoint.Position);
+            if (!map[i]) continue;
+
+            level[i] = roomPool[random.Next(roomPool.Count)];
+            roomPool.Remove(level[i]);
         }
+        currentCell = center;
+        currentRoom = level[currentCell];
     }
+
+    #endregion
+    
+    #region Update methods
 
     protected override void Update(GameTime gameTime)
     {
@@ -265,7 +311,6 @@ public class Game1 : Game
                 //reset game
                 ship.Position = _camera.GameRect.Center.ToVector2();
                 shots.Clear();
-                enemies.Clear();
                 pickups.Clear();
                 bullets.Clear();
                 score = 0;
@@ -318,7 +363,7 @@ public class Game1 : Game
         ship.Position += moveVector * shipSpeed;
 
         //wall collisions
-        foreach (var wall in walls)
+        foreach (var wall in currentRoom.Walls)
         {
             var collision = CollisionManager.CheckCollision(ship.Colliders[0], wall, ship.Position, Vector2.Zero, ship.PreviousPosition, Vector2.Zero);
             if (collision is not null)
@@ -327,7 +372,33 @@ public class Game1 : Game
                 ship.Position += response;
             }
         }
-        _camera.Position = ship.Position.ToPoint() - _camera.Size / new Point(2);
+        //_camera.Position = ship.Position.ToPoint() - _camera.Size / new Point(2);
+
+        //exit room
+        if (ship.Y < 0 && level[currentCell - levelWidth] is not null)
+        {
+            currentCell -= levelWidth;
+            currentRoom = level[currentCell];
+            ship.Y = currentRoom.Height;
+        }
+        if (ship.Y > currentRoom.Height && level[currentCell + levelWidth] is not null)
+        {
+            currentCell += levelWidth;
+            currentRoom = level[currentCell];
+            ship.Y = 0;
+        }
+        if (ship.X < 0 && level[currentCell - 1] is not null)
+        {
+            currentCell -= 1;
+            currentRoom = level[currentCell];
+            ship.X = currentRoom.Width;
+        }
+        if (ship.X > currentRoom.Width && level[currentCell + 1] is not null)
+        {
+            currentCell += 1;
+            currentRoom = level[currentCell];
+            ship.X = 0;
+        }
 
         //shooting
         Vector2 fireVector = new(
@@ -369,7 +440,7 @@ public class Game1 : Game
             // {
             //     shots.Remove(shot);
             // }
-            foreach (var wall in walls)
+            foreach (var wall in currentRoom.Walls)
             {
                 if (CollisionManager.CheckCollisionSimple(shot.Colliders[0], wall, shot.Position, Vector2.Zero))
                 {
@@ -385,10 +456,10 @@ public class Game1 : Game
 
     private void UpdateEnemies(InputState inputState)
     {
-        for (int i = enemies.Count - 1; i >= 0; i--)
+        for (int i = currentRoom.Enemies.Count - 1; i >= 0; i--)
         {
-            var enemy = enemies[i];
-            var los = CheckLoS(enemy.Position, ship.Position, walls);
+            var enemy = currentRoom.Enemies[i];
+            var los = CheckLoS(enemy.Position, ship.Position, currentRoom.Walls);
             if (los)
             {
                 enemy.target = ship.Position;
@@ -403,7 +474,7 @@ public class Game1 : Game
                     {
                         if (enemy.Y % 8 == 0)
                         {
-                            enemy.Velocity = PickRandomVelocity();
+                            enemy.Velocity = PickRandomVelocity(enemySpeed);
                         }
                         else
                         {
@@ -464,7 +535,7 @@ public class Game1 : Game
             }
 
             //enemy collision w walls
-            foreach (var wall in walls)
+            foreach (var wall in currentRoom.Walls)
             {
                 var collision = CollisionManager.CheckCollision(enemy.Colliders[0], wall, enemy.Position, Vector2.Zero, enemy.PreviousPosition, Vector2.Zero);
                 if (collision is not null)
@@ -493,7 +564,7 @@ public class Game1 : Game
                     enemy.Health -= 1;
                     if (enemy.Health <= 0)
                     {
-                        enemies.Remove(enemy);
+                        currentRoom.Enemies.Remove(enemy);
                         pickups.Add(new GameObject(enemy.Position) {
                             Sprites = [_juicyCM.GenerateSprite("spritesheet", "pickup")],
                             Colliders = [new ColliderNode(-4, -4, 8, 8)],
@@ -510,33 +581,10 @@ public class Game1 : Game
             if (PlayerVulnerable
             && CollisionManager.CheckCollisionSimple(ship.Colliders[0], enemy.Colliders[0], ship.Position, enemy.Position))
             {
-                _asm.ScheduleAction(frameNumber + 1, () => enemies.Remove(enemy));
+                _asm.ScheduleAction(frameNumber + 1, () => currentRoom.Enemies.Remove(enemy));
                 HitPlayer();
             }
         }
-
-        if (frameNumber >= nextEnemy)
-        {
-            var enemy = new Enemy(possibleSpawnLocations[random.Next(possibleSpawnLocations.Count)])
-            {
-                Sprites = [_juicyCM.GenerateSprite("spritesheet", "enemy" + JuicyContentManager.DirectionString(directionNames, facing))],
-                Colliders = [new ColliderNode(0, 0, 16, 16)],
-                Velocity = PickRandomVelocity(),
-            };
-            enemies.Add(enemy);
-            nextEnemy = frameNumber + enemyDelay;
-        }
-    }
-
-    private Vector2 PickRandomVelocity()
-    {
-        var possibleVelocities = new Vector2[] {
-            new (enemySpeed, 0),
-            new (0, enemySpeed),
-            new (-enemySpeed, 0),
-            new (0, -enemySpeed),
-        };
-        return possibleVelocities[random.Next(possibleVelocities.Length)];
     }
 
     private void UpdatePickups(InputState inputState)
@@ -584,7 +632,7 @@ public class Game1 : Game
             bullet.Update(null, frameNumber, _inputManager.InputState);
             
             //wall collisions
-            foreach (var wall in walls)
+            foreach (var wall in currentRoom.Walls)
             {
                 if (CollisionManager.CheckCollisionSimple(bullet.Colliders[0], wall, bullet.Position, Vector2.Zero))
                 {
@@ -620,6 +668,21 @@ public class Game1 : Game
                 particles.Remove(particle);
             }
         }
+    }
+
+    #endregion
+
+    #region Misc methods
+
+    public static Vector2 PickRandomVelocity(float speed)
+    {
+        var possibleVelocities = new Vector2[] {
+            new (speed, 0),
+            new (0, speed),
+            new (-speed, 0),
+            new (0, -speed),
+        };
+        return possibleVelocities[random.Next(possibleVelocities.Length)];
     }
 
     private void Explode(Vector2 position)
@@ -682,6 +745,59 @@ public class Game1 : Game
         return true;
     }
 
+    protected void ToggleFullScreen()
+    {
+        _graphics.IsFullScreen = !_graphics.IsFullScreen;
+        if (_graphics.IsFullScreen)
+        {
+            _graphics.PreferredBackBufferWidth = GraphicsDevice.Adapter.CurrentDisplayMode.Width;
+            _graphics.PreferredBackBufferHeight = GraphicsDevice.Adapter.CurrentDisplayMode.Height;
+        }
+        else
+        {
+            _graphics.PreferredBackBufferWidth = Window.ClientBounds.Width;
+            _graphics.PreferredBackBufferWidth = Window.ClientBounds.Height;
+        }
+        _graphics.ApplyChanges();
+        OnResizeWindow(null, null);
+    }
+
+    protected void OnResizeWindow(object sender, EventArgs e)
+    {
+        int xScale = Math.Max(1, Window.ClientBounds.Width / _camera.GameRect.Width);
+        int yScale = Math.Max(1, Window.ClientBounds.Height / _camera.GameRect.Height);
+        int scale = Math.Min(xScale, yScale);
+        Point size = new(_camera.GameRect.Width * scale, _camera.GameRect.Height * scale);
+        Point location = new((Window.ClientBounds.Width - size.X) / 2, (Window.ClientBounds.Height - size.Y) / 2);
+        _camera.ViewRect = new Rectangle(location, size);
+        _guiCamera.ViewRect = new Rectangle(location, size);
+    }
+
+    public static void DefaultControls(InputManager inputManager)
+    {
+        inputManager.SetBinding(InputMode.KeyboardOnly, (int)InputSignal.HorizontalMovement, new KeyInput(Keys.A, Keys.D));
+        inputManager.SetBinding(InputMode.KeyboardOnly, (int)InputSignal.VerticalMovement, new KeyInput(Keys.W, Keys.S));
+        inputManager.SetBinding(InputMode.KeyboardOnly, (int)InputSignal.FireHorizontal, new KeyInput(Keys.Left, Keys.Right));
+        inputManager.SetBinding(InputMode.KeyboardOnly, (int)InputSignal.FireVertical, new KeyInput(Keys.Up, Keys.Down));
+        inputManager.SetBinding(InputMode.KeyboardOnly, (int)InputSignal.Accept, new KeyInput(Keys.Enter));
+
+        inputManager.SetBinding(InputMode.MouseAndKeyboard, (int)InputSignal.HorizontalMovement, new KeyInput(Keys.A, Keys.D));
+        inputManager.SetBinding(InputMode.MouseAndKeyboard, (int)InputSignal.VerticalMovement, new KeyInput(Keys.W, Keys.S));
+        inputManager.SetBinding(InputMode.MouseAndKeyboard, (int)InputSignal.FireHorizontal, new MouseAxisInput(MouseAxes.MouseX));
+        inputManager.SetBinding(InputMode.MouseAndKeyboard, (int)InputSignal.FireVertical, new MouseAxisInput(MouseAxes.MouseY));
+        inputManager.SetBinding(InputMode.MouseAndKeyboard, (int)InputSignal.Accept, new MouseButtonInput(MouseButtons.LeftButton));
+
+        inputManager.SetBinding(InputMode.XBoxController, (int)InputSignal.HorizontalMovement, new GamePadAxisInput(GamePadAxes.LeftStickX));
+        inputManager.SetBinding(InputMode.XBoxController, (int)InputSignal.VerticalMovement, new GamePadAxisInput(GamePadAxes.LeftStickY, true));
+        inputManager.SetBinding(InputMode.XBoxController, (int)InputSignal.FireHorizontal, new GamePadAxisInput(GamePadAxes.RightStickX));
+        inputManager.SetBinding(InputMode.XBoxController, (int)InputSignal.FireVertical, new GamePadAxisInput(GamePadAxes.RightStickY, true));
+        inputManager.SetBinding(InputMode.XBoxController, (int)InputSignal.Accept, new GamePadButtonInput(Buttons.A));
+    }
+    
+    #endregion
+
+    #region Draw methods
+
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.Black);
@@ -695,15 +811,13 @@ public class Game1 : Game
 
         _camera.Draw(_whitePixel, _camera.GameRect, new Color(20, 24, 46));
 
-        _scene.Draw(null, _camera, Vector2.Zero);
+        currentRoom.Draw(_camera);
 
-        foreach (var enemy in enemies)
+        foreach (var enemy in currentRoom.Enemies)
         {
             enemy.Draw(null, _camera, Vector2.Zero);
             // DrawCollider(_camera, enemy.Colliders[0], Color.Red, enemy.Position);
-            var color = Color.White;
-            if (CheckLoS(enemy.Position, ship.Position, walls))
-                color = Color.Red;
+            var color = CheckLoS(enemy.Position, ship.Position, currentRoom.Walls) ? Color.Red : Color.White;
             // DrawLine(_camera, enemy.Position, ship.Position, color);
         }
 
@@ -761,6 +875,8 @@ public class Game1 : Game
         _guiCamera.DrawString(_juicyCM.Fonts["blocky sans"], "Score: " + score, new Vector2(1), Color.White);
         _guiCamera.DrawString(_juicyCM.Fonts["blocky sans"], "Lives: " + lives, new Vector2(_guiCamera.GameRect.Width - 1, 1), Color.White, TextHorizontal.RightAligned);
         
+        DrawMap(new (0, 164, 28, 28));
+
         //_spriteBatch.Draw(_juicyCM.Textures["spritesheet"], _camera.ViewRect, new Rectangle(0, 0, 160, 20), Color.Transparent);
         _spriteBatch.End();
         base.Draw(gameTime);
@@ -784,53 +900,29 @@ public class Game1 : Game
         camera.Draw(_whitePixel, new(point.ToPoint(), scale.ToPoint()), color, angle);
     }
 
-    protected void ToggleFullScreen()
+    private void DrawMap(Rectangle area)
     {
-        _graphics.IsFullScreen = !_graphics.IsFullScreen;
-        if (_graphics.IsFullScreen)
+        for (int x = 0; x < levelWidth; x++)
         {
-            _graphics.PreferredBackBufferWidth = GraphicsDevice.Adapter.CurrentDisplayMode.Width;
-            _graphics.PreferredBackBufferHeight = GraphicsDevice.Adapter.CurrentDisplayMode.Height;
+            for (int y = 0; y < levelHeight; y++)
+            {
+                var index = x + y * levelWidth;
+                if (level[index] is null)
+                    continue;
+
+                var roomArea = new Rectangle(
+                    area.X + x * area.Width / levelWidth,
+                    area.Y + y * area.Height / levelHeight,
+                    area.Width / levelWidth,
+                    area.Height / levelHeight
+                );
+                var color = Color.White;
+                if (index == currentCell)
+                    color = Color.Blue;
+                _guiCamera.Draw(_whitePixel, roomArea, color);
+            }
         }
-        else
-        {
-            _graphics.PreferredBackBufferWidth = Window.ClientBounds.Width;
-            _graphics.PreferredBackBufferWidth = Window.ClientBounds.Height;
-        }
-        _graphics.ApplyChanges();
-        OnResizeWindow(null, null);
     }
 
-    //TODO: account for multiple cameras
-    protected void OnResizeWindow(object sender, EventArgs e)
-    {
-        int xScale = Math.Max(1, Window.ClientBounds.Width / _camera.GameRect.Width);
-        int yScale = Math.Max(1, Window.ClientBounds.Height / _camera.GameRect.Height);
-        int scale = Math.Min(xScale, yScale);
-        Point size = new(_camera.GameRect.Width * scale, _camera.GameRect.Height * scale);
-        Point location = new((Window.ClientBounds.Width - size.X) / 2, (Window.ClientBounds.Height - size.Y) / 2);
-        _camera.ViewRect = new Rectangle(location, size);
-        _guiCamera.ViewRect = new Rectangle(location, size);
-    }
-
-    public static void DefaultControls(InputManager inputManager)
-    {
-        inputManager.SetBinding(InputMode.KeyboardOnly, (int)InputSignal.HorizontalMovement, new KeyInput(Keys.A, Keys.D));
-        inputManager.SetBinding(InputMode.KeyboardOnly, (int)InputSignal.VerticalMovement, new KeyInput(Keys.W, Keys.S));
-        inputManager.SetBinding(InputMode.KeyboardOnly, (int)InputSignal.FireHorizontal, new KeyInput(Keys.Left, Keys.Right));
-        inputManager.SetBinding(InputMode.KeyboardOnly, (int)InputSignal.FireVertical, new KeyInput(Keys.Up, Keys.Down));
-        inputManager.SetBinding(InputMode.KeyboardOnly, (int)InputSignal.Accept, new KeyInput(Keys.Enter));
-
-        inputManager.SetBinding(InputMode.MouseAndKeyboard, (int)InputSignal.HorizontalMovement, new KeyInput(Keys.A, Keys.D));
-        inputManager.SetBinding(InputMode.MouseAndKeyboard, (int)InputSignal.VerticalMovement, new KeyInput(Keys.W, Keys.S));
-        inputManager.SetBinding(InputMode.MouseAndKeyboard, (int)InputSignal.FireHorizontal, new MouseAxisInput(MouseAxes.MouseX));
-        inputManager.SetBinding(InputMode.MouseAndKeyboard, (int)InputSignal.FireVertical, new MouseAxisInput(MouseAxes.MouseY));
-        inputManager.SetBinding(InputMode.MouseAndKeyboard, (int)InputSignal.Accept, new MouseButtonInput(MouseButtons.LeftButton));
-
-        inputManager.SetBinding(InputMode.XBoxController, (int)InputSignal.HorizontalMovement, new GamePadAxisInput(GamePadAxes.LeftStickX));
-        inputManager.SetBinding(InputMode.XBoxController, (int)InputSignal.VerticalMovement, new GamePadAxisInput(GamePadAxes.LeftStickY, true));
-        inputManager.SetBinding(InputMode.XBoxController, (int)InputSignal.FireHorizontal, new GamePadAxisInput(GamePadAxes.RightStickX));
-        inputManager.SetBinding(InputMode.XBoxController, (int)InputSignal.FireVertical, new GamePadAxisInput(GamePadAxes.RightStickY, true));
-        inputManager.SetBinding(InputMode.XBoxController, (int)InputSignal.Accept, new GamePadButtonInput(Buttons.A));
-    }
+    #endregion
 }

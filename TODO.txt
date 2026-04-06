@@ -1,6 +1,7 @@
 TODO
 Next up:
-- how to handle enemy spawns?
+- fix colliders on existing rooms
+- Create different types of rooms
 - enemy states
   - avoid walls while chasing
   - actual patrolling behavior
@@ -49,3 +50,4 @@ DONE
 - enemy collisions with walls
 - shot collision w walls
 - LoS test
+- map gen

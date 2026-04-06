@@ -32,9 +32,45 @@
             "scaleInDock": 4,
             "scaleInEditor": 11
         },
+        "cross1.tmj": {
+            "expandedObjectLayers": [
+                5,
+                2
+            ],
+            "scale": 3,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 155.66666666666669,
+                "y": 115.33333333333331
+            }
+        },
+        "cross2.tmj": {
+            "scale": 4.0078125,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 127.2514619883041,
+                "y": 96.06237816764133
+            }
+        },
+        "cross3.tmj": {
+            "scale": 4.0078125,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 128,
+                "y": 96.06237816764133
+            }
+        },
+        "cross4.tmj": {
+            "scale": 4.0078125,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 128,
+                "y": 96.06237816764133
+            }
+        },
         "cross5.tmj": {
             "scale": 3,
-            "selectedLayer": 3,
+            "selectedLayer": 0,
             "viewCenter": {
                 "x": 143.33333333333331,
                 "y": 97.66666666666669

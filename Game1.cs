@@ -14,6 +14,7 @@ using System.Linq;
 using MathHelper = Engine.MathHelper;
 using Engine.JsonConverters;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace BulletHail;
 
@@ -59,9 +60,9 @@ public class Game1 : Game
     private Effect _betterBlend;
     private Texture2D _whitePixel;
 
-    private List<Room> roomPool;
+    private List<Room>[] roomPool;
     private Room[] level;
-    private readonly int levelWidth = 7, levelHeight = 7;
+    private readonly int levelWidth = 7, levelHeight = 7, targetRoomCount = 10;
     private int currentCell;
     private Room currentRoom;
 
@@ -191,25 +192,35 @@ public class Game1 : Game
         _juicyCM.LoadTilesets(Path.Combine(contentFolder, "Tiled"));
 
         //load the rooms
-        roomPool = [
-            _tiledParser.ParseRoom(_juicyCM, Path.Combine(contentFolder, "Tiled", "cross1.tmj")),
-            _tiledParser.ParseRoom(_juicyCM, Path.Combine(contentFolder, "Tiled", "cross2.tmj")),
-            _tiledParser.ParseRoom(_juicyCM, Path.Combine(contentFolder, "Tiled", "cross3.tmj")),
-            _tiledParser.ParseRoom(_juicyCM, Path.Combine(contentFolder, "Tiled", "cross4.tmj")),
-            _tiledParser.ParseRoom(_juicyCM, Path.Combine(contentFolder, "Tiled", "cross5.tmj")),
-            _tiledParser.ParseRoom(_juicyCM, Path.Combine(contentFolder, "Tiled", "cross1.tmj")),
-            _tiledParser.ParseRoom(_juicyCM, Path.Combine(contentFolder, "Tiled", "cross2.tmj")),
-            _tiledParser.ParseRoom(_juicyCM, Path.Combine(contentFolder, "Tiled", "cross3.tmj")),
-            _tiledParser.ParseRoom(_juicyCM, Path.Combine(contentFolder, "Tiled", "cross4.tmj")),
-            _tiledParser.ParseRoom(_juicyCM, Path.Combine(contentFolder, "Tiled", "cross5.tmj")),
-        ];
+        roomPool = new List<Room>[16];
+        var roomTypes = new string[] { "", "r", "t", "rt", "l", "rl", "tl", "rtl", "b", "rb", "tb", "rtb", "lb", "rlb", "tlb", "rtlb", };
+        for (int i = 1; i < roomTypes.Length; i++)
+        {
+            roomPool[i] = [];
+            var directoryInfo = new DirectoryInfo(Path.Combine(contentFolder, "Tiled", roomTypes[i]));
+            var files = directoryInfo.GetFiles();
+            foreach (var file in files)
+            {
+                var fileName = Path.GetFileNameWithoutExtension(file.Name);
+                if (file.Extension == ".tmj")
+                {
+                    var room = _tiledParser.ParseRoom(_juicyCM, file.FullName);
+                    if (room == null)
+                    {
+                        Debug.WriteLine("Could not read JSON room file: " + file.FullName);
+                        continue;
+                    }
+                    roomPool[i].Add(room);
+                }
+            }
+        }
 
         //generate the map
         var center = levelWidth / 2 + levelHeight / 2 * levelWidth;
         var map = new bool[49];
         var frontier = new List<int>() { center }; //add the center cell to the array
         var roomCount = 0;
-        while (roomCount < 10 && frontier.Count > 0)
+        while (roomCount < targetRoomCount && frontier.Count > 0)
         {
             //pick a cell that's currently in the frontier
             var index = random.Next(frontier.Count);
@@ -242,12 +253,24 @@ public class Game1 : Game
 
         //fill the level with rooms according to the map
         level = new Room[levelWidth * levelHeight];
+        var roomsPlaced = 0;
         for (int i = 0; i < map.Length; i++)
         {
             if (!map[i]) continue;
+            
+            //calculate which room type this is
+            var roomType = 0;
+            if (i % levelWidth < levelWidth - 1 && map[i + 1]) roomType += 1;
+            if (i / levelWidth > 0 && map[i - levelWidth]) roomType += 2;
+            if (i % levelWidth > 0 && map[i - 1]) roomType += 4;
+            if (i / levelWidth < levelHeight - 1 && map[i + levelWidth]) roomType += 8;
 
-            level[i] = roomPool[random.Next(roomPool.Count)];
-            roomPool.Remove(level[i]);
+            //fill in the actual room
+            var typePool = roomPool[roomType];
+            level[i] = typePool[random.Next(typePool.Count)];
+            roomsPlaced++;
+            // if (roomPool.Count + roomsPlaced > roomCount)
+            //     roomPool.Remove(level[i]);
         }
         currentCell = center;
         currentRoom = level[currentCell];

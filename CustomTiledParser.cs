@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using Engine.JsonConverters;
 using Engine.Managers;
 using Engine.Nodes;
+using Microsoft.Xna.Framework;
 using Newtonsoft.Json.Linq;
 
 namespace BulletHail;
@@ -11,14 +12,22 @@ public class CustomTiledParser : TiledParser
 {
     public override (string name, Node node) ParseObject(JuicyContentManager contentManager, JObject obj)
     {
-        string name = "";
+        string name = obj.Value<string>("name");
         Node objectNode;
         //var properties = ParseProperties(contentManager, obj);
 
         switch (obj.Value<string>("type"))
         {
             default:
-                return base.ParseObject(contentManager, obj);
+                if (obj.Value<float>("width") > 0 && obj.Value<float>("height") > 0)
+                {
+                    var position = new Vector2(obj.Value<float>("x"), obj.Value<float>("y"));
+                    var dimensions = new Vector2(obj.Value<float>("width"), obj.Value<float>("height"));
+                    objectNode = new ColliderNode(position + dimensions / 2, dimensions);
+                }
+                else
+                    return base.ParseObject(contentManager, obj);
+                break;
         }
         return (name, objectNode);
     }
@@ -31,7 +40,7 @@ public class CustomTiledParser : TiledParser
         var scene = ParseMap(juicyCM, jObject);
         var room = new Room()
         {
-            Dimensions = new((int)jObject["width"] * (int)jObject["tilewidth"], (int)jObject["height"]* (int)jObject["tileheight"]),
+            Dimensions = new((int)jObject["width"] * (int)jObject["tilewidth"], (int)jObject["height"] * (int)jObject["tileheight"]),
         };
 
         for (int i = 0; i < scene.CountChildren; i++)

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BulletHail")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6d30d322c1e3bcfdedc67273cc00f0ba1c38de68")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+059964d7fea95d86d60c25f8fc3270bb8a3529c8")]
 [assembly: System.Reflection.AssemblyProductAttribute("BulletHail")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BulletHail")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

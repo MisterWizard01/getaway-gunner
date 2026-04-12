@@ -3,9 +3,10 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "rt/rt_1.tmj",
+    "activeFile": "tlb/tlb_1.tmj",
     "expandedProjectPaths": [
-        "."
+        ".",
+        "tlb"
     ],
     "fileStates": {
         "Level1.tmj": {
@@ -155,10 +156,10 @@
         },
         "rl/rl_1.tmj": {
             "scale": 4,
-            "selectedLayer": 0,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 127.75,
-                "y": 99
+                "x": 198.125,
+                "y": 138.75
             }
         },
         "rlb/mechanical.tsj": {
@@ -225,8 +226,8 @@
             "scale": 4,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 129.625,
-                "y": 101.25
+                "x": 127.875,
+                "y": 96
             }
         },
         "rtb/rtb_2.tmj": {
@@ -244,16 +245,16 @@
             "scale": 4,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 129.625,
-                "y": 99
+                "x": 127.875,
+                "y": 96
             }
         },
         "rtl/rtl_2.tmj": {
             "scale": 4,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 129.625,
-                "y": 99
+                "x": 127.875,
+                "y": 96
             }
         },
         "rtl/sprites.tsj": {
@@ -277,8 +278,8 @@
             "scale": 3.0479166666666666,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 133.69788106630213,
-                "y": 116.1449077238551
+                "x": 127.7922077922078,
+                "y": 95.80314422419686
             }
         },
         "rtlb/rtlb_2.tmj": {
@@ -286,14 +287,14 @@
             "selectedLayer": 0,
             "viewCenter": {
                 "x": 127.7922077922078,
-                "y": 142.72043745727956
+                "y": 95.80314422419686
             }
         },
         "rtlb/rtlb_3.tmj": {
             "scale": 3.0479166666666666,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 132.7136021872864,
+                "x": 127.7922077922078,
                 "y": 95.80314422419686
             }
         },
@@ -302,7 +303,7 @@
             "selectedLayer": 0,
             "viewCenter": {
                 "x": 127.7922077922078,
-                "y": 189.30963773069038
+                "y": 95.80314422419686
             }
         },
         "rtlb/rtlb_5.tmj": {
@@ -310,7 +311,7 @@
             "selectedLayer": 0,
             "viewCenter": {
                 "x": 127.7922077922078,
-                "y": 142.72043745727956
+                "y": 95.80314422419686
             }
         },
         "rtlb/sprites.tsj": {
@@ -371,8 +372,8 @@
             "scale": 3,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 149.16666666666666,
-                "y": 101.33333333333331
+                "x": 139.83333333333331,
+                "y": 95.66666666666669
             }
         },
         "tb/tb_1.tmj": {
@@ -425,20 +426,28 @@
         },
         "tlb/tlb_1.tmj": {
             "expandedObjectLayers": [
-                2,
-                5
+                5,
+                2
             ],
             "scale": 4,
-            "selectedLayer": 4,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 133.25,
-                "y": 97.75
+                "x": 123.125,
+                "y": 99.25
+            }
+        },
+        "tlb/tlb_2.tmj": {
+            "scale": 3.9818359374999996,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 127.95605042429,
+                "y": 95.93564526413891
             }
         }
     },
     "last.exportedFilePath": "E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Tiled Stuff",
     "last.externalTilesetPath": "E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/Tiled",
-    "last.imagePath": "E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content",
+    "last.imagePath": "E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/Textures",
     "map.height": 24,
     "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
     "map.lastUsedFormat": "json",
@@ -446,23 +455,34 @@
     "map.tileWidth": 8,
     "map.width": 32,
     "openFiles": [
-        "rt/rt_1.tmj"
+        "t/t_1.tmj",
+        "rtb/rtb_1.tmj",
+        "rtb/rtb_2.tmj",
+        "rtl/rtl_1.tmj",
+        "rtl/rtl_2.tmj",
+        "rtlb/rtlb_1.tmj",
+        "rtlb/rtlb_2.tmj",
+        "rtlb/rtlb_3.tmj",
+        "rtlb/rtlb_4.tmj",
+        "rtlb/rtlb_5.tmj",
+        "rl/rl_1.tmj",
+        "tlb/tlb_1.tmj"
     ],
     "project": "getaway_gunner.tiled-project",
     "property.type": "string",
     "recentFiles": [
-        "tl/tl_1.tmj",
         "tb/tb_1.tmj",
-        "rt/rt_1.tmj",
-        "tlb/tlb_1.tmj",
-        "lb_1.tmj",
-        "rtb/rtb_1.tmj",
-        "rtl/rtl_1.tmj",
+        "t/t_1.tmj",
+        "tl/tl_1.tmj",
         "rtlb/rtlb_1.tmj",
         "rtlb/rtlb_2.tmj",
+        "rtlb/rtlb_3.tmj",
         "rtlb/rtlb_4.tmj",
         "rtlb/rtlb_5.tmj",
-        "rlb/rlb_2.tmj"
+        "rtl/rtl_1.tmj",
+        "rtl/rtl_2.tmj",
+        "rtb/rtb_1.tmj",
+        "rtb/rtb_2.tmj"
     ],
     "tileset.lastUsedFormat": "json",
     "tileset.tileSize": {

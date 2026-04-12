@@ -1,5 +1,5 @@
 { "columns":32,
- "image":"..\/spritesheet.png",
+ "image":"..\/Textures\/spritesheet.png",
  "imageheight":512,
  "imagewidth":512,
  "margin":0,
@@ -7,7 +7,7 @@
  "objectalignment":"center",
  "spacing":0,
  "tilecount":1024,
- "tiledversion":"1.10.1",
+ "tiledversion":"1.12.1",
  "tileheight":16,
  "tilewidth":16,
  "transformations":

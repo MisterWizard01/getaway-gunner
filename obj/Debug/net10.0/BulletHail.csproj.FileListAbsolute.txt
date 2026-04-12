@@ -45,14 +45,7 @@ C:\Users\gcagl\source\repos\getaway-gunner\obj\Debug\net10.0\refint\BulletHail.d
 C:\Users\gcagl\source\repos\getaway-gunner\obj\Debug\net10.0\BulletHail.pdb
 C:\Users\gcagl\source\repos\getaway-gunner\obj\Debug\net10.0\BulletHail.genruntimeconfig.cache
 C:\Users\gcagl\source\repos\getaway-gunner\obj\Debug\net10.0\ref\BulletHail.dll
-E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\basically aseprite.xnb
-E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\betterBlend.xnb
-E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\blocky sans.xnb
-E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\grayscale.xnb
-E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\mostly sans.xnb
-E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\silhouette.xnb
 E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\spritesheet.xnb
-E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\tiny mono.xnb
 E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\BulletHail.exe
 E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\BulletHail.deps.json
 E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\BulletHail.runtimeconfig.json
@@ -92,4 +85,30 @@ E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\obj\Debug\net10.0\refint\Bullet
 E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\obj\Debug\net10.0\BulletHail.pdb
 E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\obj\Debug\net10.0\BulletHail.genruntimeconfig.cache
 E:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\obj\Debug\net10.0\ref\BulletHail.dll
-e:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\tilesheet.xnb
+e:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\Sounds\laser1.ogg
+e:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\Sounds\laser1.xnb
+e:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\Sounds\shooting1.ogg
+e:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\Sounds\shooting1.xnb
+e:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\Sounds\shooting2.ogg
+e:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\Sounds\shooting2.xnb
+e:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\Sounds\shooting3.ogg
+e:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\Sounds\shooting3.xnb
+e:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\laser1.ogg
+e:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\laser1.xnb
+e:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\shooting1.ogg
+e:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\shooting2.ogg
+e:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\shooting3.ogg
+e:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\Effects\betterBlend.xnb
+e:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\Effects\grayscale.xnb
+e:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\Effects\silhouette.xnb
+e:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\Sounds\explosion5.xnb
+e:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\Sounds\metal_hit1.xnb
+e:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\Textures\basically aseprite.xnb
+e:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\Textures\blocky sans.xnb
+e:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\Textures\mostly sans.xnb
+e:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\Textures\spritesheet.xnb
+e:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\Textures\tilesheet.xnb
+e:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\Textures\tiny mono.xnb
+e:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\Sounds\metal_hit2.xnb
+e:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\Sounds\metal_hit3.xnb
+e:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\Sounds\metal_hit4.xnb

@@ -1,11 +1,15 @@
 TODO
 Next up:
-- fix colliders on existing rooms
-- Create different types of rooms
-- enemy states
-  - avoid walls while chasing
-  - actual patrolling behavior
-- powerup collision with walls
+- sounds
+  - isolate variations of shooting sound
+  - pickup sound
+  - game over?
+- lock rooms until all enemies are dead
+- combat updates
+  - enemy states
+    - avoid walls while chasing
+    - actual patrolling behavior
+  - dodging
 
 Bugs:
 - jiggedy when running diagonally into walls to the right
@@ -13,18 +17,23 @@ Bugs:
 Juice:
 - particles	
   - bullet pop
-- sounds
 - screenshake
 
 Polish:
 - rotation delay
 - flames from ship
+- powerup collision with walls
 
 Content:
-- levels
+- more rooms
+- more enemy types
+  - fill rooms with enemies
+- level exit
+- actual minimap
 
 Technical:
 - rotate sprites
+- autogenerate wall colliders based on tiles
 
 
 DONE
@@ -51,3 +60,5 @@ DONE
 - shot collision w walls
 - LoS test
 - map gen
+- fix colliders on existing rooms
+- Create different types of rooms

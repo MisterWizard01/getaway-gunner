@@ -156,11 +156,11 @@ public class Game1 : Game
 
         //_grayscaleEffect = Content.Load<Effect>("grayscale");
         //_silhouetteEffect = Content.Load<Effect>("silhouette");
-        _betterBlend = Content.Load<Effect>("betterBlend");
+        _betterBlend = Content.Load<Effect>("Effects\\betterBlend");
 
         var contentFolder = FileManager.GetContentFolder();
-        _juicyCM.LoadTextures(Content, contentFolder);
-        //_juicyCM.LoadSprites(Path.Combine(FileManager.GetContentFolder(), "sprites/Sprites.json"));
+        _juicyCM.LoadTextures(Content, Path.Combine(contentFolder, "Textures"));
+        _juicyCM.LoadSounds(Content, Path.Combine(contentFolder, "Sounds"));
 
         _juicyCM.GenerateAnimationSet("ship", directionNames, 1, 0, 0, 20, 20, 0, 0, false);
         _juicyCM.GenerateAnimationSet("enemy", directionNames, 1, 0, 20, 22, 22, 0, 0, false);
@@ -240,7 +240,7 @@ public class Game1 : Game
             if (left + right + top + bottom >= 8)
                 continue;
 
-            //create a room to go here
+            //mark this cell to have a room added later
             map[cell] = true;
             roomCount++;
 
@@ -450,6 +450,8 @@ public class Game1 : Game
                         Sprites = [_juicyCM.GenerateSprite("spritesheet", "muzzle flash" + JuicyContentManager.DirectionString(directionNames, facing))],
                     };
                     particles.Add(muzzleFlash);
+
+                    _juicyCM.Sounds["shooting1"].Play();
                 }
                 nextShot = frameNumber + shotDelay;
             }
@@ -459,10 +461,10 @@ public class Game1 : Game
         {
             var shot = shots[i];
             shot.Position += shot.Velocity;
-            // if (shot.X < -8 || shot.Y < -8 || shot.X > _camera.Size.X + 8 || shot.Y > _camera.Size.Y + 8)
-            // {
-            //     shots.Remove(shot);
-            // }
+            if (shot.X < -8 || shot.Y < -8 || shot.X > _camera.Size.X + 8 || shot.Y > _camera.Size.Y + 8)
+            {
+                shots.Remove(shot);
+            }
             foreach (var wall in currentRoom.Walls)
             {
                 if (CollisionManager.CheckCollisionSimple(shot.Colliders[0], wall, shot.Position, Vector2.Zero))
@@ -472,6 +474,7 @@ public class Game1 : Game
                     {
                         Sprites = [_juicyCM.GenerateSprite("spritesheet", "shot pop")],
                     });
+                    _juicyCM.Sounds["shooting2"].Play();
                 }
             }
         }
@@ -552,6 +555,7 @@ public class Game1 : Game
                             Sprites = [_juicyCM.GenerateSprite("spritesheet", "muzzle flash" + JuicyContentManager.DirectionString(directionNames, facing))],
                         };
                         particles.Add(muzzleFlash);
+                        _juicyCM.Sounds["laser1"].Play();
                         enemy.state = EnemyState.Chasing;
                     }
                     break;
@@ -584,6 +588,8 @@ public class Game1 : Game
                     {
                         MakeSpark(shot.Position, MathHelper.VectorToAngle(shot.Velocity) + random.NextSingle() * MathF.PI / 2 - MathF.PI / 4);
                     }
+                    _juicyCM.Sounds["metal_hit" + random.Next(1, 5)].Play();
+
                     enemy.Health -= 1;
                     if (enemy.Health <= 0)
                     {
@@ -731,6 +737,7 @@ public class Game1 : Game
         };
         flash.Sprites[0].FrameRatio = 0.5f;
         particles.Add(flash);
+        _juicyCM.Sounds["explosion5"].Play();
     }
 
     private void MakeSpark(Vector2 position, float direction)
@@ -870,13 +877,6 @@ public class Game1 : Game
         {
             particle.Draw(null, _camera, Vector2.Zero);
         }
-        // foreach (var flash in explosionFlashes)
-        // {
-        //     // var perc = flash.Lifetime / 8f;
-        //     // var radius = (int)(16 * perc);
-        //     // var color = new Color(255, perc * 0.75f + 0.25f, perc);
-        //     _camera.Draw(_circle16, new Rectangle(flash.Position.ToPoint() - new Point(16), new Point(32)), Color.White);
-        // }
         
         foreach (var bullet in bullets)
         {

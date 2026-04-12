@@ -4,17 +4,35 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
-    <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/basically aseprite.png</File>
-    <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/betterBlend.fx</File>
-    <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/blocky sans.png</File>
-    <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/grayscale.fx</File>
-    <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/mostly sans.png</File>
-    <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/silhouette.fx</File>
-    <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/spritesheet.png</File>
-    <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/tilesheet.png</File>
-    <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/tiny mono.png</File>
+    <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/Effects/betterBlend.fx</File>
+    <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/Effects/grayscale.fx</File>
+    <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/Effects/silhouette.fx</File>
+    <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/Sounds/explosion5.wav</File>
+    <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/Sounds/laser1.wav</File>
+    <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/Sounds/metal_hit1.wav</File>
+    <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/Sounds/metal_hit2.wav</File>
+    <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/Sounds/metal_hit3.wav</File>
+    <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/Sounds/metal_hit4.wav</File>
+    <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/Sounds/shooting1.wav</File>
+    <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/Sounds/shooting2.wav</File>
+    <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/Sounds/shooting3.wav</File>
+    <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/Textures/basically aseprite.png</File>
+    <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/Textures/blocky sans.png</File>
+    <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/Textures/mostly sans.png</File>
+    <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/Textures/spritesheet.png</File>
+    <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/Textures/tilesheet.png</File>
+    <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/Textures/tiny mono.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

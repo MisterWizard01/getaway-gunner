@@ -31,6 +31,12 @@
 /processorParam:DebugMode=Auto
 /build:Effects/silhouette.fx
 
+#begin Sounds/bang1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/bang1.wav
+
 #begin Sounds/explosion5.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -42,12 +48,6 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Sounds/laser1.wav
-
-#begin Sounds/metal_hit1.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Sounds/metal_hit1.wav
 
 #begin Sounds/metal_hit1.wav
 /importer:WavImporter
@@ -73,6 +73,18 @@
 /processorParam:Quality=Best
 /build:Sounds/metal_hit4.wav
 
+#begin Sounds/pickup1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/pickup1.wav
+
+#begin Sounds/pickup2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/pickup2.wav
+
 #begin Sounds/shooting1.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -90,6 +102,18 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Sounds/shooting3.wav
+
+#begin Sounds/shooting4.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/shooting4.wav
+
+#begin Sounds/soft_hit1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/soft_hit1.wav
 
 #begin Textures/basically aseprite.png
 /importer:TextureImporter

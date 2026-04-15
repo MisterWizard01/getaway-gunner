@@ -112,3 +112,8 @@ e:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\Textu
 e:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\Sounds\metal_hit2.xnb
 e:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\Sounds\metal_hit3.xnb
 e:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\Sounds\metal_hit4.xnb
+e:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\Sounds\shooting4.xnb
+e:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\Sounds\bang1.xnb
+e:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\Sounds\soft_hit1.xnb
+e:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\Sounds\pickup1.xnb
+e:\Users\gcagl\CodingEngines\C# Stuff\BulletHail\bin\Debug\net10.0\Content\Sounds\pickup2.xnb

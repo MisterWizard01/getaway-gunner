@@ -7,15 +7,20 @@
     <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/Effects/betterBlend.fx</File>
     <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/Effects/grayscale.fx</File>
     <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/Effects/silhouette.fx</File>
+    <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/Sounds/bang1.wav</File>
     <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/Sounds/explosion5.wav</File>
     <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/Sounds/laser1.wav</File>
     <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/Sounds/metal_hit1.wav</File>
     <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/Sounds/metal_hit2.wav</File>
     <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/Sounds/metal_hit3.wav</File>
     <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/Sounds/metal_hit4.wav</File>
+    <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/Sounds/pickup1.wav</File>
+    <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/Sounds/pickup2.wav</File>
     <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/Sounds/shooting1.wav</File>
     <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/Sounds/shooting2.wav</File>
     <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/Sounds/shooting3.wav</File>
+    <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/Sounds/shooting4.wav</File>
+    <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/Sounds/soft_hit1.wav</File>
     <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/Textures/basically aseprite.png</File>
     <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/Textures/blocky sans.png</File>
     <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/Textures/mostly sans.png</File>
@@ -24,6 +29,11 @@
     <File>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/Textures/tiny mono.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

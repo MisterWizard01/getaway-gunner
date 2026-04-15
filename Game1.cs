@@ -451,7 +451,7 @@ public class Game1 : Game
                     };
                     particles.Add(muzzleFlash);
 
-                    _juicyCM.Sounds["shooting1"].Play();
+                    _juicyCM.Sounds["shooting" + random.Next(1, 5)].Play();
                 }
                 nextShot = frameNumber + shotDelay;
             }
@@ -474,7 +474,7 @@ public class Game1 : Game
                     {
                         Sprites = [_juicyCM.GenerateSprite("spritesheet", "shot pop")],
                     });
-                    _juicyCM.Sounds["shooting2"].Play();
+                    _juicyCM.Sounds["soft_hit1"].Play();
                 }
             }
         }
@@ -644,6 +644,7 @@ public class Game1 : Game
             {
                 pickups.Remove(pickup);
                 score += 100;
+                _juicyCM.Sounds["pickup2"].Play();
             }
         }
 

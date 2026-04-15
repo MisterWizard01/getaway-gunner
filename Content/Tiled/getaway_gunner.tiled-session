@@ -3,10 +3,17 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "tlb/tlb_1.tmj",
+    "activeFile": "",
     "expandedProjectPaths": [
         ".",
-        "tlb"
+        "t",
+        "rt",
+        "tl",
+        "rtl",
+        "rtlb",
+        "tlb",
+        "tb",
+        "rtb"
     ],
     "fileStates": {
         "Level1.tmj": {
@@ -455,18 +462,6 @@
     "map.tileWidth": 8,
     "map.width": 32,
     "openFiles": [
-        "t/t_1.tmj",
-        "rtb/rtb_1.tmj",
-        "rtb/rtb_2.tmj",
-        "rtl/rtl_1.tmj",
-        "rtl/rtl_2.tmj",
-        "rtlb/rtlb_1.tmj",
-        "rtlb/rtlb_2.tmj",
-        "rtlb/rtlb_3.tmj",
-        "rtlb/rtlb_4.tmj",
-        "rtlb/rtlb_5.tmj",
-        "rl/rl_1.tmj",
-        "tlb/tlb_1.tmj"
     ],
     "project": "getaway_gunner.tiled-project",
     "property.type": "string",

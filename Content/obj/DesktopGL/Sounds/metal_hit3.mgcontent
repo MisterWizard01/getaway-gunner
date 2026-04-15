@@ -3,7 +3,7 @@
   <SourceFile>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/Sounds/metal_hit3.wav</SourceFile>
   <SourceTime>2026-04-12T13:10:29.9661201-04:00</SourceTime>
   <DestFile>E:/Users/gcagl/CodingEngines/C# Stuff/BulletHail/Content/bin/DesktopGL/Sounds/metal_hit3.xnb</DestFile>
-  <DestTime>2026-04-12T13:13:11.893678-04:00</DestTime>
+  <DestTime>2026-04-13T22:16:24.6253172-04:00</DestTime>
   <Importer>WavImporter</Importer>
   <ImporterTime>2018-12-08T11:35:54-05:00</ImporterTime>
   <Processor>SoundEffectProcessor</Processor>

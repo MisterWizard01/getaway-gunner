@@ -85,6 +85,8 @@ public class Game1 : Game
     private List<GameObject> bullets;
     private float bulletSpeed;
     
+    private GameObject[] barriers;
+
     private List<Particle> particles;
 
     private bool PlayerVulnerable => lives > 0 && frameNumber > iFramesEnd;
@@ -144,6 +146,50 @@ public class Game1 : Game
         bullets = [];
         bulletSpeed = 3;
 
+        barriers = [
+            //right
+            new GameObject(new(_camera.GameRect.Width - 4, _camera.GameRect.Height / 2))
+            {
+                Sprites = [new SpriteNode(_juicyCM.Textures["spritesheet"], _juicyCM.Animations["electric barrier"])
+                { 
+                    Rotation = MathF.PI / 2,
+                    FrameRatio = 0.5f,
+                }],
+                Colliders = [new ColliderNode(0, 0, 8, 32)],
+            },
+
+            //top
+            new GameObject(new(_camera.GameRect.Width / 2, 4))
+            {
+                Sprites = [new SpriteNode(_juicyCM.Textures["spritesheet"], _juicyCM.Animations["electric barrier"])
+                {
+                    FrameRatio = 0.5f,
+                }],
+                Colliders = [new ColliderNode(0, 0, 32, 8)],
+            },
+
+            //left
+            new GameObject(new(4, _camera.GameRect.Height / 2))
+            {
+                Sprites = [new SpriteNode(_juicyCM.Textures["spritesheet"], _juicyCM.Animations["electric barrier"])
+                { 
+                    Rotation = MathF.PI / 2,
+                    FrameRatio = 0.5f,
+                }],
+                Colliders = [new ColliderNode(0, 0, 8, 32)],
+            },
+
+            //bottom
+            new GameObject(new(_camera.GameRect.Width / 2, _camera.GameRect.Height - 4))
+            {
+                Sprites = [new SpriteNode(_juicyCM.Textures["spritesheet"], _juicyCM.Animations["electric barrier"])
+                {
+                    FrameRatio = 0.5f,
+                }],
+                Colliders = [new ColliderNode(0, 0, 32, 8)],
+            },
+        ];
+
         particles = [];
     }
 
@@ -181,6 +227,8 @@ public class Game1 : Game
         _juicyCM.GenerateAnimation("spark steep negative", 9, 352, 96, 16, 16, 0, true);
         _juicyCM.GenerateAnimation("spark shallow positive", 9, 352, 112, 16, 16, 0, true);
         _juicyCM.GenerateAnimation("spark shallow negative", 9, 352, 128, 16, 16, 0, true);
+        _juicyCM.GenerateAnimation("electric barrier", 7, 144, 96, 32, 8, -16, true)
+            .EndAction = AnimationEndAction.Cycle;
 
         // _juicyCM.LoadFonts();
         _juicyCM.Fonts.Add("tiny mono", FontBuilder.BuildFont(_juicyCM.Textures["tiny mono"], new Point(3, 3), new Point(1, 1), ' ', false));
@@ -389,6 +437,18 @@ public class Game1 : Game
         foreach (var wall in currentRoom.Walls)
         {
             var collision = CollisionManager.CheckCollision(ship.Colliders[0], wall, ship.Position, Vector2.Zero, ship.PreviousPosition, Vector2.Zero);
+            if (collision is not null)
+            {
+                var response = CollisionManager.HandleSolidCollision(collision.Value);
+                ship.Position += response;
+            }
+        }
+
+        //barrier collisions
+        foreach (var barrier in barriers)
+        {
+            var collision = CollisionManager.CheckCollision(ship.Colliders[0], barrier.Colliders[0], ship.Position, barrier.Position,
+                ship.PreviousPosition, barrier.PreviousPosition);
             if (collision is not null)
             {
                 var response = CollisionManager.HandleSolidCollision(collision.Value);
@@ -698,6 +758,11 @@ public class Game1 : Game
                 particles.Remove(particle);
             }
         }
+
+        foreach (var barrier in barriers)
+        {
+            barrier.Update(null, frameNumber, _inputManager.InputState);
+        }
     }
 
     #endregion
@@ -840,9 +905,14 @@ public class Game1 : Game
         );
         _spriteBatch.GraphicsDevice.ScissorRectangle = _camera.ViewRect;
 
-        _camera.Draw(_whitePixel, _camera.GameRect, new Color(20, 24, 46));
+        _camera.Draw(_whitePixel, new Rectangle(_camera.GameRect.Center, _camera.GameRect.Size), new Color(20, 24, 46));
 
         currentRoom.Draw(_camera);
+
+        foreach (var barrier in barriers)
+        {
+            barrier.Draw(null, _camera, Vector2.Zero);
+        }
 
         foreach (var enemy in currentRoom.Enemies)
         {

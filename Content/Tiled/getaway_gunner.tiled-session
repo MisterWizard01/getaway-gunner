@@ -3,16 +3,16 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "",
+    "activeFile": "rtlb/rtlb_2.tmj",
     "expandedProjectPaths": [
         ".",
-        "t",
         "rt",
         "tl",
-        "rtl",
-        "rtlb",
-        "tlb",
         "tb",
+        "tlb",
+        "rtlb",
+        "rtl",
+        "t",
         "rtb"
     ],
     "fileStates": {
@@ -462,15 +462,16 @@
     "map.tileWidth": 8,
     "map.width": 32,
     "openFiles": [
+        "rtlb/rtlb_2.tmj"
     ],
     "project": "getaway_gunner.tiled-project",
     "property.type": "string",
     "recentFiles": [
+        "rtlb/rtlb_2.tmj",
         "tb/tb_1.tmj",
         "t/t_1.tmj",
         "tl/tl_1.tmj",
         "rtlb/rtlb_1.tmj",
-        "rtlb/rtlb_2.tmj",
         "rtlb/rtlb_3.tmj",
         "rtlb/rtlb_4.tmj",
         "rtlb/rtlb_5.tmj",

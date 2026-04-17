@@ -1,10 +1,8 @@
 TODO
 Next up:
-- sounds
-  - isolate variations of shooting sound
-  - pickup sound
-  - game over?
 - lock rooms until all enemies are dead
+  - drop barriers when all enemies are dead
+  - don't show barriers if there's not a door there
 - combat updates
   - enemy states
     - avoid walls while chasing
@@ -32,7 +30,6 @@ Content:
 - actual minimap
 
 Technical:
-- rotate sprites
 - autogenerate wall colliders based on tiles
 
 
@@ -62,3 +59,6 @@ DONE
 - map gen
 - fix colliders on existing rooms
 - Create different types of rooms
+- sounds
+- rotate sprites
+- collision with barriers

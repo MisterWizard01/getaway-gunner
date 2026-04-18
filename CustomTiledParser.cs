@@ -19,14 +19,16 @@ public class CustomTiledParser : TiledParser
         switch (obj.Value<string>("type"))
         {
             default:
+                var position = new Vector2(obj.Value<float>("x"), obj.Value<float>("y"));
                 if (obj.Value<float>("width") > 0 && obj.Value<float>("height") > 0)
                 {
-                    var position = new Vector2(obj.Value<float>("x"), obj.Value<float>("y"));
                     var dimensions = new Vector2(obj.Value<float>("width"), obj.Value<float>("height"));
                     objectNode = new ColliderNode(position + dimensions / 2, dimensions);
                 }
                 else
-                    return base.ParseObject(contentManager, obj);
+                {
+                    objectNode = new Node2D(position);
+                }
                 break;
         }
         return (name, objectNode);
@@ -69,6 +71,16 @@ public class CustomTiledParser : TiledParser
                         Colliders = [new ColliderNode(0, 0, 16, 16)],
                         Velocity = Game1.PickRandomVelocity(Game1.enemySpeed),
                     });
+            }
+        }
+
+        var patrolPoints = scene.GetChild("Patrol points");
+        if (patrolPoints is not null) {
+            for (var i = 0; i < patrolPoints.CountChildren; i++)
+            {
+                var patrolPoint = patrolPoints.GetChild(i) as Node2D;
+                if (patrolPoint is not null)
+                    room.PatrolPoints.Add(patrolPoint.Position);
             }
         }
         return room;

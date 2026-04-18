@@ -3,18 +3,13 @@ using Engine.Managers;
 using Engine.Nodes;
 using SpriteBuilder;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using MathHelper = Engine.MathHelper;
-using Engine.JsonConverters;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
 
 namespace BulletHail;
 
@@ -77,7 +72,8 @@ public class Game1 : Game
     private float shotSpeed;
     private int nextShot, shotDelay;
 
-    public static int nextEnemy, enemyDelay, enemySpeed;
+    public static readonly int enemyTurnDelay = 30, enemyDelay = 120, enemySpeed = 1;
+    public static int nextEnemy;
 
     private List<GameObject> pickups;
     private int pickupTime;
@@ -137,9 +133,6 @@ public class Game1 : Game
         shots = [];
         shotSpeed = 8;
         shotDelay = 5;
-
-        enemyDelay = 120;
-        enemySpeed = 1;
 
         pickups = [];
 
@@ -258,6 +251,7 @@ public class Game1 : Game
                         Debug.WriteLine("Could not read JSON room file: " + file.FullName);
                         continue;
                     }
+                    room.RoomType = i;
                     roomPool[i].Add(room);
                 }
             }
@@ -298,6 +292,16 @@ public class Game1 : Game
             if (right  == 1) frontier.Add(cell + 1);
             if (bottom == 1) frontier.Add(cell + levelWidth);
         }
+
+        map = [
+            false, false, false, false, false, false, false,
+            false, false, false, false, false, false, false,
+            false, false, false,  true, false, false, false,
+            false, false, false,  true,  true, false, false,
+            false, false, false,  true, false, false, false,
+            false, false, false, false, false, false, false,
+            false, false, false, false, false, false, false,
+        ];
 
         //fill the level with rooms according to the map
         level = new Room[levelWidth * levelHeight];
@@ -445,14 +449,17 @@ public class Game1 : Game
         }
 
         //barrier collisions
-        foreach (var barrier in barriers)
+        if (currentRoom.Enemies.Count > 0)
         {
-            var collision = CollisionManager.CheckCollision(ship.Colliders[0], barrier.Colliders[0], ship.Position, barrier.Position,
-                ship.PreviousPosition, barrier.PreviousPosition);
-            if (collision is not null)
+            foreach (var barrier in barriers)
             {
-                var response = CollisionManager.HandleSolidCollision(collision.Value);
-                ship.Position += response;
+                var collision = CollisionManager.CheckCollision(ship.Colliders[0], barrier.Colliders[0], ship.Position, barrier.Position,
+                    ship.PreviousPosition, barrier.PreviousPosition);
+                if (collision is not null)
+                {
+                    var response = CollisionManager.HandleSolidCollision(collision.Value);
+                    ship.Position += response;
+                }
             }
         }
         //_camera.Position = ship.Position.ToPoint() - _camera.Size / new Point(2);
@@ -462,25 +469,25 @@ public class Game1 : Game
         {
             currentCell -= levelWidth;
             currentRoom = level[currentCell];
-            ship.Y = currentRoom.Height;
+            ship.Y = currentRoom.Height - 8 - ship.Colliders[0].Height / 2;
         }
         if (ship.Y > currentRoom.Height && level[currentCell + levelWidth] is not null)
         {
             currentCell += levelWidth;
             currentRoom = level[currentCell];
-            ship.Y = 0;
+            ship.Y = 8 + ship.Colliders[0].Height / 2;;
         }
         if (ship.X < 0 && level[currentCell - 1] is not null)
         {
             currentCell -= 1;
             currentRoom = level[currentCell];
-            ship.X = currentRoom.Width;
+            ship.X = currentRoom.Width - 8 - ship.Colliders[0].Width / 2;
         }
         if (ship.X > currentRoom.Width && level[currentCell + 1] is not null)
         {
             currentCell += 1;
             currentRoom = level[currentCell];
-            ship.X = 0;
+            ship.X = 8 + ship.Colliders[0].Width / 2;
         }
 
         //shooting
@@ -542,61 +549,47 @@ public class Game1 : Game
 
     private void UpdateEnemies(InputState inputState)
     {
-        for (int i = currentRoom.Enemies.Count - 1; i >= 0; i--)
+        for (int enemyIndex = currentRoom.Enemies.Count - 1; enemyIndex >= 0; enemyIndex--)
         {
-            var enemy = currentRoom.Enemies[i];
+            var enemy = currentRoom.Enemies[enemyIndex];
             var los = CheckLoS(enemy.Position, ship.Position, currentRoom.Walls);
             if (los)
             {
-                enemy.target = ship.Position;
+                enemy.Target = ship.Position;
             }
-            var targetVector = enemy.target - enemy.Position;
+            var targetVector = enemy.Target - enemy.Position;
             var facing = MathHelper.VectorToAngle(targetVector);
-            switch (enemy.state)
+            switch (enemy.State)
             {
-                case EnemyState.Patrolling:
-                    enemy.Update(null, frameNumber, inputState);
-                    if (enemy.X % 8 == 0)
-                    {
-                        if (enemy.Y % 8 == 0)
-                        {
-                            enemy.Velocity = PickRandomVelocity(enemySpeed);
-                        }
-                        else
-                        {
-                            enemy.Velocity.X = 0;
-                        }
-                    }
-                    else
-                    {
-                        enemy.Velocity.Y = 0;
-                    }
-                    if (los)
-                    {
-                        enemy.state = EnemyState.Chasing;
-                    }
-                    break;
-
                 case EnemyState.Chasing:
-                    if (targetVector.LengthSquared() < enemySpeed * enemySpeed)
+                    if (targetVector.LengthSquared() < 16 * 16)
                     {
-                        enemy.state = EnemyState.Patrolling;
+                        enemy.Target = new(random.Next(currentRoom.Width), random.Next(currentRoom.Height));
                     }
                     else if (los && (ship.Position - enemy.Position).LengthSquared() < 64 * 64)
                     {
-                        enemy.state = EnemyState.Attacking;
+                        enemy.State = EnemyState.Attacking;
                     }
                     else
                     {
                         targetVector.Normalize();
                         facing = MathHelper.Snap(facing, MathF.PI / 4);
-                        enemy.Velocity = MathHelper.AngleToVector(facing, enemySpeed);
+                        var desiredVelocity = MathHelper.AngleToVector(facing, enemySpeed);
+                        if (desiredVelocity != enemy.Velocity && frameNumber >= enemy.lastTurnedFrame + enemyTurnDelay)
+                        {
+                            //snap the enemy's position to prevent cobblestoning
+                            enemy.X = MathF.Round(enemy.X);
+                            enemy.Y = MathF.Round(enemy.Y);
+                            enemy.Velocity = desiredVelocity;
+                            enemy.lastTurnedFrame = frameNumber;
+                            _juicyCM.SetSpriteAnimation(enemy.Sprites[0], "enemy" + JuicyContentManager.DirectionString(directionNames, facing));
+                        }
                         enemy.Update(null, frameNumber, inputState);
-                        _juicyCM.SetSpriteAnimation(enemy.Sprites[0], "enemy" + JuicyContentManager.DirectionString(directionNames, facing));
                     }
                     break;
 
                 case EnemyState.Attacking:
+                    _juicyCM.SetSpriteAnimation(enemy.Sprites[0], "enemy" + JuicyContentManager.DirectionString(directionNames, facing));
                     //enemy shooting
                     if (frameNumber >= enemy.NextShot)
                     {
@@ -616,7 +609,7 @@ public class Game1 : Game
                         };
                         particles.Add(muzzleFlash);
                         _juicyCM.Sounds["laser1"].Play();
-                        enemy.state = EnemyState.Chasing;
+                        enemy.State = EnemyState.Chasing;
                     }
                     break;
             }
@@ -629,6 +622,7 @@ public class Game1 : Game
                 {
                     var response = CollisionManager.HandleSolidCollision(collision.Value);
                     enemy.Position += response;
+                    enemy.Target = RandomDestination(currentRoom.PatrolPoints, enemy.Position);
                 }
             }
 
@@ -780,6 +774,25 @@ public class Game1 : Game
         return possibleVelocities[random.Next(possibleVelocities.Length)];
     }
 
+    public Vector2 RandomDestination(List<Vector2> possibilities, Vector2 startingPoint, int maxTries = 10)
+    {
+        var target = startingPoint;
+        for (int i = 0; i < maxTries; i++)
+        {
+            if (possibilities.Count == 0)
+            {
+                target = new(random.Next(currentRoom.Width), random.Next(currentRoom.Height));
+            }
+            else
+            {
+                target = possibilities[random.Next(possibilities.Count)];
+            }
+            if (CheckLoS(startingPoint, target, currentRoom.Walls))
+                break;
+        }
+        return target;
+    }
+
     private void Explode(Vector2 position)
     {
         for (int k = 0; k < 6; k++)
@@ -909,9 +922,16 @@ public class Game1 : Game
 
         currentRoom.Draw(_camera);
 
-        foreach (var barrier in barriers)
+        if (currentRoom.Enemies.Count > 0)
         {
-            barrier.Draw(null, _camera, Vector2.Zero);
+            for (int i = 0; i < barriers.Length; i++)
+            {
+                if ((currentRoom.RoomType & (1 << i)) > 0)
+                {
+                    var barrier = barriers[i];
+                    barrier.Draw(null, _camera, Vector2.Zero);
+                }
+            }
         }
 
         foreach (var enemy in currentRoom.Enemies)
@@ -919,7 +939,7 @@ public class Game1 : Game
             enemy.Draw(null, _camera, Vector2.Zero);
             // DrawCollider(_camera, enemy.Colliders[0], Color.Red, enemy.Position);
             var color = CheckLoS(enemy.Position, ship.Position, currentRoom.Walls) ? Color.Red : Color.White;
-            // DrawLine(_camera, enemy.Position, ship.Position, color);
+            // DrawLine(_camera, enemy.Position, enemy.Target, color);
         }
 
         foreach (var pickup in pickups)
@@ -983,15 +1003,17 @@ public class Game1 : Game
 
     private void DrawLine(Camera camera, Vector2 point1, Vector2 point2, Color color, float thickness = 1f)
     {
-        var distance = Vector2.Distance(point1, point2);
         var angle = (float)Math.Atan2(point2.Y - point1.Y, point2.X - point1.X);
-        DrawLine(camera, point1, distance, angle, color, thickness);
+        var distance = Vector2.Distance(point1, point2);
+        var scale = new Vector2(distance, thickness);
+        camera.Draw(_whitePixel, new(((point1 + point2)/ 2).ToPoint(), scale.ToPoint()), color, angle);
     }
 
     private void DrawLine(Camera camera, Vector2 point, float length, float angle, Color color, float thickness = 1f)
     {
+        var point2 = point + MathHelper.AngleToVector(angle, length);
         var scale = new Vector2(length, thickness);
-        camera.Draw(_whitePixel, new(point.ToPoint(), scale.ToPoint()), color, angle);
+        camera.Draw(_whitePixel, new(((point + point2)/ 2).ToPoint(), scale.ToPoint()), color, angle);
     }
 
     private void DrawMap(Rectangle area)

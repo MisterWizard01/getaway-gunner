@@ -1,12 +1,8 @@
 TODO
 Next up:
-- lock rooms until all enemies are dead
-  - drop barriers when all enemies are dead
-  - don't show barriers if there's not a door there
 - combat updates
   - enemy states
     - avoid walls while chasing
-    - actual patrolling behavior
   - dodging
 
 Bugs:
@@ -31,6 +27,7 @@ Content:
 
 Technical:
 - autogenerate wall colliders based on tiles
+- deep copy rooms when generating maps
 
 
 DONE
@@ -62,3 +59,6 @@ DONE
 - sounds
 - rotate sprites
 - collision with barriers
+- drop barriers when all enemies are dead
+- don't show barriers if there's not a door there
+- actual patrolling behavior

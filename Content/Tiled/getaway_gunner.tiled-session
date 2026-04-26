@@ -3,17 +3,12 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "rtlb/rtlb_2.tmj",
+    "activeFile": "",
     "expandedProjectPaths": [
+        "l",
         ".",
-        "rt",
-        "tl",
-        "tb",
-        "tlb",
-        "rtlb",
-        "rtl",
-        "t",
-        "rtb"
+        "r",
+        "b"
     ],
     "fileStates": {
         "Level1.tmj": {
@@ -39,6 +34,22 @@
         "Mechanical.tsx": {
             "scaleInDock": 4,
             "scaleInEditor": 11
+        },
+        "b/b_0.tmj": {
+            "scale": 3.9818359374999996,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 123.43552263697454,
+                "y": 99.4516113209398
+            }
+        },
+        "b/b_1.tmj": {
+            "scale": 3.9818359374999996,
+            "selectedLayer": -1,
+            "viewCenter": {
+                "x": 127.95605042429,
+                "y": 95.93564526413891
+            }
         },
         "cross1.tmj": {
             "expandedObjectLayers": [
@@ -82,6 +93,30 @@
             "viewCenter": {
                 "x": 142.33333333333331,
                 "y": 97.66666666666669
+            }
+        },
+        "l/l_0.tmj": {
+            "scale": 3.9818359374999996,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 127.95605042429,
+                "y": 95.93564526413891
+            }
+        },
+        "l/l_1.tmj": {
+            "scale": 3.9818359374999996,
+            "selectedLayer": -1,
+            "viewCenter": {
+                "x": 127.95605042429,
+                "y": 95.93564526413891
+            }
+        },
+        "lb/lb_0.tmj": {
+            "scale": 3.9818359374999996,
+            "selectedLayer": -1,
+            "viewCenter": {
+                "x": 127.95605042429,
+                "y": 95.93564526413891
             }
         },
         "lb/mechanical.tsj": {
@@ -161,6 +196,38 @@
             "scaleInDock": 3,
             "scaleInEditor": 4
         },
+        "r/r_0.tmj": {
+            "scale": 3.9818359374999996,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 127.95605042429,
+                "y": 95.93564526413891
+            }
+        },
+        "r/r_1.tmj": {
+            "scale": 3.9818359374999996,
+            "selectedLayer": -1,
+            "viewCenter": {
+                "x": 127.95605042429,
+                "y": 95.93564526413891
+            }
+        },
+        "rb/rb_0.tmj": {
+            "scale": 3.9818359374999996,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 127.95605042429,
+                "y": 95.93564526413891
+            }
+        },
+        "rl/rl_0.tmj": {
+            "scale": 3,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 134.83333333333331,
+                "y": 114.66666666666669
+            }
+        },
         "rl/rl_1.tmj": {
             "scale": 4,
             "selectedLayer": 3,
@@ -172,11 +239,19 @@
         "rlb/mechanical.tsj": {
             "scaleInDock": 1
         },
+        "rlb/rlb_0.tmj": {
+            "scale": 3.0479166666666666,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 136.32262474367738,
+                "y": 123.03485987696514
+            }
+        },
         "rlb/rlb_1.tmj": {
             "scale": 3.0479166666666666,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 136.48667122351333,
+                "x": 136.32262474367738,
                 "y": 123.03485987696514
             }
         },
@@ -184,7 +259,7 @@
             "scale": 3.0479166666666666,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 152.8913192071087,
+                "x": 153.0553656869446,
                 "y": 78.41421736158578
             }
         },
@@ -213,6 +288,18 @@
                 "y": 96.125
             }
         },
+        "rt/rt_0.tmj": {
+            "expandedObjectLayers": [
+                5,
+                2
+            ],
+            "scale": 3,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 140.16666666666666,
+                "y": 104.99999999999999
+            }
+        },
         "rt/rt_1.tmj": {
             "expandedObjectLayers": [
                 5,
@@ -221,20 +308,27 @@
             "scale": 3,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 146.16666666666666,
-                "y": 94.66666666666669
+                "x": 128,
+                "y": 96.16666666666666
+            }
+        },
+        "rtb/rtb_0.tmj": {
+            "scale": 3.9818359374999996,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 127.95605042429,
+                "y": 29.634571050179034
             }
         },
         "rtb/rtb_1.tmj": {
             "expandedObjectLayers": [
-                5,
-                2
+                6
             ],
-            "scale": 4,
+            "scale": 3,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 127.875,
-                "y": 96
+                "x": 138.16666666666666,
+                "y": 129.33333333333331
             }
         },
         "rtb/rtb_2.tmj": {
@@ -247,6 +341,14 @@
         },
         "rtl/mechanical.tsj": {
             "scaleInDock": 1
+        },
+        "rtl/rtl_0.tmj": {
+            "scale": 4,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 127.875,
+                "y": 96
+            }
         },
         "rtl/rtl_1.tmj": {
             "scale": 4,
@@ -281,6 +383,17 @@
         "rtlb/mechanical.tsj": {
             "scaleInDock": 1
         },
+        "rtlb/rtlb_0.tmj": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 3.0479166666666666,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 145.83732057416267,
+                "y": 108.59876965140123
+            }
+        },
         "rtlb/rtlb_1.tmj": {
             "scale": 3.0479166666666666,
             "selectedLayer": 0,
@@ -293,8 +406,8 @@
             "scale": 3.0479166666666666,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 132.7136021872864,
-                "y": 119.09774436090225
+                "x": 139.27546138072452,
+                "y": 95.80314422419686
             }
         },
         "rtlb/rtlb_3.tmj": {
@@ -371,6 +484,18 @@
             "scaleInDock": 3,
             "scaleInEditor": 11
         },
+        "t/t_0.tmj": {
+            "expandedObjectLayers": [
+                5,
+                2
+            ],
+            "scale": 3,
+            "selectedLayer": -1,
+            "viewCenter": {
+                "x": 141.16666666666666,
+                "y": 118.99999999999999
+            }
+        },
         "t/t_1.tmj": {
             "expandedObjectLayers": [
                 5,
@@ -381,6 +506,18 @@
             "viewCenter": {
                 "x": 139.83333333333331,
                 "y": 95.66666666666669
+            }
+        },
+        "tb/tb_0.tmj": {
+            "expandedObjectLayers": [
+                5,
+                2
+            ],
+            "scale": 3,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 138.16666666666666,
+                "y": 121.66666666666669
             }
         },
         "tb/tb_1.tmj": {
@@ -419,6 +556,18 @@
                 "y": 406.66666666666674
             }
         },
+        "tl/tl_0.tmj": {
+            "expandedObjectLayers": [
+                5,
+                2
+            ],
+            "scale": 3,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 126.5,
+                "y": 101.99999999999999
+            }
+        },
         "tl/tl_1.tmj": {
             "expandedObjectLayers": [
                 5,
@@ -429,6 +578,18 @@
             "viewCenter": {
                 "x": 126.5,
                 "y": 101.99999999999999
+            }
+        },
+        "tlb/tlb_0.tmj": {
+            "expandedObjectLayers": [
+                5,
+                2
+            ],
+            "scale": 4,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 123.125,
+                "y": 99.25
             }
         },
         "tlb/tlb_1.tmj": {
@@ -462,23 +623,22 @@
     "map.tileWidth": 8,
     "map.width": 32,
     "openFiles": [
-        "rtlb/rtlb_2.tmj"
     ],
     "project": "getaway_gunner.tiled-project",
-    "property.type": "string",
+    "property.type": "list",
     "recentFiles": [
-        "rtlb/rtlb_2.tmj",
-        "tb/tb_1.tmj",
+        "b/b_0.tmj",
+        "l/l_0.tmj",
+        "r/r_0.tmj",
+        "t/t_0.tmj",
+        "tlb/tlb_0.tmj",
+        "tl/tl_0.tmj",
+        "tb/tb_0.tmj",
         "t/t_1.tmj",
-        "tl/tl_1.tmj",
-        "rtlb/rtlb_1.tmj",
+        "rtlb/rtlb_0.tmj",
+        "rtlb/rtlb_2.tmj",
         "rtlb/rtlb_3.tmj",
-        "rtlb/rtlb_4.tmj",
-        "rtlb/rtlb_5.tmj",
-        "rtl/rtl_1.tmj",
-        "rtl/rtl_2.tmj",
-        "rtb/rtb_1.tmj",
-        "rtb/rtb_2.tmj"
+        "rtlb/rtlb_4.tmj"
     ],
     "tileset.lastUsedFormat": "json",
     "tileset.tileSize": {

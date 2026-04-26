@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using MathHelper = Engine.MathHelper;
+using System.Linq;
 
 namespace BulletHail;
 
@@ -55,7 +56,8 @@ public class Game1 : Game
     private Effect _betterBlend;
     private Texture2D _whitePixel;
 
-    private List<Room>[] roomPool;
+    private Dictionary<string, Room>[] roomPool;
+    private readonly string[] roomTypes = ["", "r", "t", "rt", "l", "rl", "tl", "rtl", "b", "rb", "tb", "rtb", "lb", "rlb", "tlb", "rtlb",];
     private Room[] level;
     private readonly int levelWidth = 7, levelHeight = 7, targetRoomCount = 10;
     private int currentCell;
@@ -72,7 +74,7 @@ public class Game1 : Game
     private float shotSpeed;
     private int nextShot, shotDelay;
 
-    public static readonly int enemyTurnDelay = 30, enemyDelay = 120, enemySpeed = 1;
+    public static readonly int enemyTurnDelay = 10, enemyDelay = 120, enemySpeed = 1;
     public static int nextEnemy;
 
     private List<GameObject> pickups;
@@ -84,6 +86,7 @@ public class Game1 : Game
     private GameObject[] barriers;
 
     private List<Particle> particles;
+    private GameObject portal;
 
     private bool PlayerVulnerable => lives > 0 && frameNumber > iFramesEnd;
     
@@ -183,6 +186,15 @@ public class Game1 : Game
             },
         ];
 
+        portal = new GameObject(_camera.GameRect.Center.ToVector2())
+        {
+            Sprites = [new SpriteNode(_juicyCM.Textures["spritesheet"], _juicyCM.Animations["portal"])
+            {
+                FrameRatio = 0.25f,
+            }],
+            Colliders = [new ColliderNode(0, 0, 48, 48)],
+        };
+
         particles = [];
     }
 
@@ -222,6 +234,8 @@ public class Game1 : Game
         _juicyCM.GenerateAnimation("spark shallow negative", 9, 352, 128, 16, 16, 0, true);
         _juicyCM.GenerateAnimation("electric barrier", 7, 144, 96, 32, 8, -16, true)
             .EndAction = AnimationEndAction.Cycle;
+        _juicyCM.GenerateAnimation("portal", 3, 192, 112, 48, 48, 0, true)
+            .EndAction = AnimationEndAction.Reverse;;
 
         // _juicyCM.LoadFonts();
         _juicyCM.Fonts.Add("tiny mono", FontBuilder.BuildFont(_juicyCM.Textures["tiny mono"], new Point(3, 3), new Point(1, 1), ' ', false));
@@ -233,8 +247,7 @@ public class Game1 : Game
         _juicyCM.LoadTilesets(Path.Combine(contentFolder, "Tiled"));
 
         //load the rooms
-        roomPool = new List<Room>[16];
-        var roomTypes = new string[] { "", "r", "t", "rt", "l", "rl", "tl", "rtl", "b", "rb", "tb", "rtb", "lb", "rlb", "tlb", "rtlb", };
+        roomPool = new Dictionary<string, Room>[16];
         for (int i = 1; i < roomTypes.Length; i++)
         {
             roomPool[i] = [];
@@ -252,16 +265,22 @@ public class Game1 : Game
                         continue;
                     }
                     room.RoomType = i;
-                    roomPool[i].Add(room);
+                    roomPool[i].Add(fileName, room);
                 }
             }
         }
 
+        GenerateLevel(roomPool);
+    }
+
+    public void GenerateLevel(Dictionary<string, Room>[] roomPool)
+    {
         //generate the map
         var center = levelWidth / 2 + levelHeight / 2 * levelWidth;
         var map = new bool[49];
         var frontier = new List<int>() { center }; //add the center cell to the array
         var roomCount = 0;
+        var portalRoom = -1;
         while (roomCount < targetRoomCount && frontier.Count > 0)
         {
             //pick a cell that's currently in the frontier
@@ -286,6 +305,12 @@ public class Game1 : Game
             map[cell] = true;
             roomCount++;
 
+            //if this is the last room placed then make it the portal room
+            if (roomCount == targetRoomCount || frontier.Count == 0)
+            {
+                portalRoom = cell;
+            }
+
             //add neighbors to frontier
             if (left   == 1) frontier.Add(cell - 1);
             if (top    == 1) frontier.Add(cell - levelWidth);
@@ -293,15 +318,15 @@ public class Game1 : Game
             if (bottom == 1) frontier.Add(cell + levelWidth);
         }
 
-        map = [
-            false, false, false, false, false, false, false,
-            false, false, false, false, false, false, false,
-            false, false, false,  true, false, false, false,
-            false, false, false,  true,  true, false, false,
-            false, false, false,  true, false, false, false,
-            false, false, false, false, false, false, false,
-            false, false, false, false, false, false, false,
-        ];
+        // map = [
+        //     false, false, false, false, false, false, false,
+        //     false, false, false, false, false, false, false,
+        //     false, false, false,  true, false, false, false,
+        //     false, false, false,  true,  true, false, false,
+        //     false, false, false,  true, false, false, false,
+        //     false, false, false, false, false, false, false,
+        //     false, false, false, false, false, false, false,
+        // ];
 
         //fill the level with rooms according to the map
         level = new Room[levelWidth * levelHeight];
@@ -319,11 +344,20 @@ public class Game1 : Game
 
             //fill in the actual room
             var typePool = roomPool[roomType];
-            level[i] = typePool[random.Next(typePool.Count)];
+            level[i] = typePool.ElementAt(random.Next(0, typePool.Count)).Value;
+            if (i == center)
+            {
+                level[i] = typePool[roomTypes[roomType] + "_0"];
+            }
             roomsPlaced++;
             // if (roomPool.Count + roomsPlaced > roomCount)
             //     roomPool.Remove(level[i]);
         }
+
+        //place the portal in the final room
+        level[portalRoom].ContainsPortal = true;
+        
+        //start the player in the center
         currentCell = center;
         currentRoom = level[currentCell];
     }
@@ -402,6 +436,7 @@ public class Game1 : Game
             UpdatePickups(inputState);
         }
         UpdateParticles();
+        portal.Update(null, frameNumber, inputState);
 
         //ready next frame
         _prevKeyboardState = keyboardState;
@@ -470,24 +505,37 @@ public class Game1 : Game
             currentCell -= levelWidth;
             currentRoom = level[currentCell];
             ship.Y = currentRoom.Height - 8 - ship.Colliders[0].Height / 2;
+            shots.Clear();
         }
         if (ship.Y > currentRoom.Height && level[currentCell + levelWidth] is not null)
         {
             currentCell += levelWidth;
             currentRoom = level[currentCell];
-            ship.Y = 8 + ship.Colliders[0].Height / 2;;
+            ship.Y = 8 + ship.Colliders[0].Height / 2;
+            shots.Clear();
         }
         if (ship.X < 0 && level[currentCell - 1] is not null)
         {
             currentCell -= 1;
             currentRoom = level[currentCell];
             ship.X = currentRoom.Width - 8 - ship.Colliders[0].Width / 2;
+            shots.Clear();
         }
         if (ship.X > currentRoom.Width && level[currentCell + 1] is not null)
         {
             currentCell += 1;
             currentRoom = level[currentCell];
             ship.X = 8 + ship.Colliders[0].Width / 2;
+            shots.Clear();
+        }
+
+        //exit level
+        if (currentRoom.ContainsPortal && CollisionManager.CheckCollisionSimple(ship.Colliders[0], portal.Colliders[0], ship.Position, portal.Position))
+        {
+            GenerateLevel(roomPool);
+            shots.Clear();
+            pickups.Clear();
+            bullets.Clear();
         }
 
         //shooting
@@ -564,7 +612,7 @@ public class Game1 : Game
                 case EnemyState.Chasing:
                     if (targetVector.LengthSquared() < 16 * 16)
                     {
-                        enemy.Target = new(random.Next(currentRoom.Width), random.Next(currentRoom.Height));
+                        enemy.Target = RandomDestination(currentRoom.PatrolPoints, enemy.Position);
                     }
                     else if (los && (ship.Position - enemy.Position).LengthSquared() < 64 * 64)
                     {
@@ -572,9 +620,32 @@ public class Game1 : Game
                     }
                     else
                     {
-                        targetVector.Normalize();
-                        facing = MathHelper.Snap(facing, MathF.PI / 4);
+                        //calculate the vector needed to make sure we have a straight path
+                        var losCode = 0;
+                        if (CheckLoS(enemy.Position + new Vector2(enemy.Colliders[0].Right, enemy.Colliders[0].Top), enemy.Target, currentRoom.Walls))
+                            losCode |= 1;
+                        if (CheckLoS(enemy.Position + new Vector2(enemy.Colliders[0].Left, enemy.Colliders[0].Top), enemy.Target, currentRoom.Walls))
+                            losCode |= 2;
+                        if (CheckLoS(enemy.Position + new Vector2(enemy.Colliders[0].Left, enemy.Colliders[0].Bottom), enemy.Target, currentRoom.Walls))
+                            losCode |= 4;
+                        if (CheckLoS(enemy.Position + new Vector2(enemy.Colliders[0].Right, enemy.Colliders[0].Bottom), enemy.Target, currentRoom.Walls))
+                            losCode |= 8;
+                        // Console.WriteLine(losCode);
+
+                        facing = losCode switch
+                        {
+                            9 => 0,
+                            1 or 11 => MathF.PI / 4,
+                            3 => MathF.PI / 2,
+                            2 or 7 => MathF.PI * 3 / 4,
+                            6 => MathF.PI,
+                            4 or 14 => MathF.PI * 5 / 4,
+                            12 => MathF.PI * 3 / 2,
+                            8 or 13 => MathF.PI * 7 / 4,
+                            _ => MathHelper.Snap(facing, MathF.PI / 4),
+                        };
                         var desiredVelocity = MathHelper.AngleToVector(facing, enemySpeed);
+
                         if (desiredVelocity != enemy.Velocity && frameNumber >= enemy.lastTurnedFrame + enemyTurnDelay)
                         {
                             //snap the enemy's position to prevent cobblestoning
@@ -922,6 +993,11 @@ public class Game1 : Game
 
         currentRoom.Draw(_camera);
 
+        if (currentRoom.ContainsPortal)
+        {
+            portal.Draw(null, _camera, Vector2.Zero);
+        }
+
         if (currentRoom.Enemies.Count > 0)
         {
             for (int i = 0; i < barriers.Length; i++)
@@ -938,7 +1014,12 @@ public class Game1 : Game
         {
             enemy.Draw(null, _camera, Vector2.Zero);
             // DrawCollider(_camera, enemy.Colliders[0], Color.Red, enemy.Position);
-            var color = CheckLoS(enemy.Position, ship.Position, currentRoom.Walls) ? Color.Red : Color.White;
+            var color = CheckLoS(enemy.Position, enemy.Target, currentRoom.Walls) ? Color.Red : Color.White;
+            // DrawLine(_camera, enemy.Position, enemy.Position + enemy.StrafeVector, color);
+            // DrawLine(_camera, enemy.Position + new Vector2(enemy.Colliders[0].Left, enemy.Colliders[0].Top), enemy.Target, Color.Blue);
+            // DrawLine(_camera, enemy.Position + new Vector2(enemy.Colliders[0].Right, enemy.Colliders[0].Top), enemy.Target, Color.Blue);
+            // DrawLine(_camera, enemy.Position + new Vector2(enemy.Colliders[0].Left, enemy.Colliders[0].Bottom), enemy.Target, Color.Blue);
+            // DrawLine(_camera, enemy.Position + new Vector2(enemy.Colliders[0].Right, enemy.Colliders[0].Bottom), enemy.Target, Color.Blue);
             // DrawLine(_camera, enemy.Position, enemy.Target, color);
         }
 

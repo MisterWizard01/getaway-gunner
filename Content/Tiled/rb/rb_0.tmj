@@ -26,7 +26,7 @@
             37, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 35,
             37, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 35,
             37, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 35,
-            33, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 34],
+            33, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 0, 0, 0, 0, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 34],
          "height":24,
          "id":1,
          "name":"Base walls",
@@ -138,8 +138,8 @@
                  "rotation":0,
                  "type":"Collider",
                  "visible":true,
-                 "width":256,
-                 "x":0,
+                 "width":248,
+                 "x":8,
                  "y":0
                 }, 
                 {
@@ -155,20 +155,44 @@
                  "y":8
                 }, 
                 {
-                 "height":176,
-                 "id":87,
+                 "height":192,
+                 "id":73,
+                 "name":"",
+                 "opacity":1,
+                 "rotation":0,
+                 "type":"Collider",
+                 "visible":true,
+                 "width":8,
+                 "x":0,
+                 "y":0
+                }, 
+                {
+                 "height":8,
+                 "id":88,
                  "name":"",
                  "opacity":1,
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":8,
-                 "x":0,
-                 "y":8
+                 "width":112,
+                 "x":144,
+                 "y":184
+                }, 
+                {
+                 "height":8,
+                 "id":90,
+                 "name":"",
+                 "opacity":1,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":104,
+                 "x":8,
+                 "y":184
                 }, 
                 {
                  "height":72,
-                 "id":90,
+                 "id":95,
                  "name":"",
                  "opacity":1,
                  "rotation":0,
@@ -177,19 +201,18 @@
                  "width":8,
                  "x":248,
                  "y":112
-                }, 
-                {
-                 "height":8,
-                 "id":107,
-                 "name":"",
-                 "opacity":1,
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":256,
-                 "x":0,
-                 "y":184
                 }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":5,
+         "name":"Enemy spawns",
+         "objects":[],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
@@ -197,7 +220,7 @@
          "y":0
         }],
  "nextlayerid":6,
- "nextobjectid":108,
+ "nextobjectid":107,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.12.1",

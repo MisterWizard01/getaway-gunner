@@ -18,11 +18,10 @@ public enum EnemyState
 public class Enemy(Vector2 position) : GameObject(position)
 {
     public const int ShotDelay = 60;
-
     public int Health = 5, NextShot = 0;
-
     public EnemyState State;
-
     public Vector2 Target;
+    public Vector2 StrafeVector;
+
     public int lastTurnedFrame = 0;
 }

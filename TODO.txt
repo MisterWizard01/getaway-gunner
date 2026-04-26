@@ -1,5 +1,10 @@
 TODO
 Next up:
+- make the exit look prettier
+- exit should only be available after all the enemies are dead
+- there should be some kind of animation
+- proper game over
+- deep copy rooms instead of reusing the same ones
 - combat updates
   - enemy states
     - avoid walls while chasing
@@ -14,7 +19,7 @@ Juice:
 - screenshake
 
 Polish:
-- rotation delay
+- rotation delay for ship
 - flames from ship
 - powerup collision with walls
 
@@ -22,7 +27,6 @@ Content:
 - more rooms
 - more enemy types
   - fill rooms with enemies
-- level exit
 - actual minimap
 
 Technical:
@@ -62,3 +66,6 @@ DONE
 - drop barriers when all enemies are dead
 - don't show barriers if there's not a door there
 - actual patrolling behavior
+- rotation delay for enemies
+- starting room
+- level exit

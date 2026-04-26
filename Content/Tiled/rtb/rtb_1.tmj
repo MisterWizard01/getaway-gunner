@@ -287,6 +287,56 @@
                  "y":96
                 }],
          "opacity":1,
+         "properties":[
+                {
+                 "name":"Patrol Points",
+                 "type":"list",
+                 "value":[
+                        {
+                         "type":"object",
+                         "value":92
+                        }, 
+                        {
+                         "type":"object",
+                         "value":93
+                        }, 
+                        {
+                         "type":"object",
+                         "value":96
+                        }, 
+                        {
+                         "type":"object",
+                         "value":94
+                        }, 
+                        {
+                         "type":"object",
+                         "value":95
+                        }, 
+                        {
+                         "type":"object",
+                         "value":94
+                        }, 
+                        {
+                         "type":"object",
+                         "value":96
+                        }, 
+                        {
+                         "type":"object",
+                         "value":97
+                        }, 
+                        {
+                         "type":"object",
+                         "value":100
+                        }, 
+                        {
+                         "type":"object",
+                         "value":101
+                        }, 
+                        {
+                         "type":"object",
+                         "value":99
+                        }]
+                }],
          "type":"objectgroup",
          "visible":true,
          "x":0,
@@ -307,8 +357,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":128,
-                 "y":32
+                 "x":136,
+                 "y":36
                 }, 
                 {
                  "height":0,
@@ -321,7 +371,7 @@
                  "visible":true,
                  "width":0,
                  "x":32,
-                 "y":32
+                 "y":36
                 }, 
                 {
                  "height":0,
@@ -334,7 +384,7 @@
                  "visible":true,
                  "width":0,
                  "x":32,
-                 "y":168
+                 "y":156
                 }, 
                 {
                  "height":0,
@@ -347,7 +397,7 @@
                  "visible":true,
                  "width":0,
                  "x":128,
-                 "y":168
+                 "y":156
                 }, 
                 {
                  "height":0,
@@ -386,7 +436,7 @@
                  "visible":true,
                  "width":0,
                  "x":224,
-                 "y":32
+                 "y":36
                 }, 
                 {
                  "height":0,
@@ -399,7 +449,7 @@
                  "visible":true,
                  "width":0,
                  "x":176,
-                 "y":32
+                 "y":36
                 }, 
                 {
                  "height":0,
@@ -412,7 +462,7 @@
                  "visible":true,
                  "width":0,
                  "x":224,
-                 "y":168
+                 "y":156
                 }, 
                 {
                  "height":0,
@@ -425,7 +475,7 @@
                  "visible":true,
                  "width":0,
                  "x":176,
-                 "y":168
+                 "y":156
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -434,7 +484,7 @@
          "y":0
         }],
  "nextlayerid":7,
- "nextobjectid":103,
+ "nextobjectid":104,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.12.1",

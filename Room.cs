@@ -11,6 +11,7 @@ public class Room()
     public List<ColliderNode> Walls = [];
     public List<Enemy> Enemies = [];
     public List<Vector2> PatrolPoints = [];
+    public bool ContainsPortal;
 
     public int RoomType = 0;
 

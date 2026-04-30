@@ -86,7 +86,7 @@ public class Game1 : Game
     private GameObject[] barriers;
 
     private List<Particle> particles;
-    private GameObject portal;
+    private Portal portal;
 
     private bool PlayerVulnerable => lives > 0 && frameNumber > iFramesEnd;
     
@@ -127,7 +127,7 @@ public class Game1 : Game
 
         ship = new GameObject(_camera.GameRect.Center.ToVector2())
         {
-            Sprites = [new SpriteNode(_juicyCM.Textures["spritesheet"], _juicyCM.Animations["shipright"])],
+            Sprites = [_juicyCM.GenerateSprite("spritesheet", "shipright")],
             Colliders = [new ColliderNode(0, 0, 6, 6)],
         };
         prevFacing = 0;
@@ -146,52 +146,57 @@ public class Game1 : Game
             //right
             new GameObject(new(_camera.GameRect.Width - 4, _camera.GameRect.Height / 2))
             {
-                Sprites = [new SpriteNode(_juicyCM.Textures["spritesheet"], _juicyCM.Animations["electric barrier"])
-                { 
-                    Rotation = MathF.PI / 2,
-                    FrameRatio = 0.5f,
-                }],
+                Sprites = [_juicyCM.GenerateSprite(
+                    textureName: "spritesheet",
+                    animationName: "electric barrier",
+                    frameRatio: 0.5f,
+                    rotation: MathF.PI / 2
+                )],
                 Colliders = [new ColliderNode(0, 0, 8, 32)],
             },
 
             //top
             new GameObject(new(_camera.GameRect.Width / 2, 4))
             {
-                Sprites = [new SpriteNode(_juicyCM.Textures["spritesheet"], _juicyCM.Animations["electric barrier"])
-                {
-                    FrameRatio = 0.5f,
-                }],
+                Sprites = [_juicyCM.GenerateSprite(
+                    textureName: "spritesheet",
+                    animationName: "electric barrier",
+                    frameRatio: 0.5f
+                )],
                 Colliders = [new ColliderNode(0, 0, 32, 8)],
             },
 
             //left
             new GameObject(new(4, _camera.GameRect.Height / 2))
             {
-                Sprites = [new SpriteNode(_juicyCM.Textures["spritesheet"], _juicyCM.Animations["electric barrier"])
-                { 
-                    Rotation = MathF.PI / 2,
-                    FrameRatio = 0.5f,
-                }],
+                Sprites = [_juicyCM.GenerateSprite(
+                    textureName: "spritesheet",
+                    animationName: "electric barrier",
+                    frameRatio: 0.5f,
+                    rotation: MathF.PI / 2
+                )],
                 Colliders = [new ColliderNode(0, 0, 8, 32)],
             },
 
             //bottom
             new GameObject(new(_camera.GameRect.Width / 2, _camera.GameRect.Height - 4))
             {
-                Sprites = [new SpriteNode(_juicyCM.Textures["spritesheet"], _juicyCM.Animations["electric barrier"])
-                {
-                    FrameRatio = 0.5f,
-                }],
+                Sprites = [_juicyCM.GenerateSprite(
+                    textureName: "spritesheet",
+                    animationName: "electric barrier",
+                    frameRatio: 0.5f
+                )],
                 Colliders = [new ColliderNode(0, 0, 32, 8)],
             },
         ];
 
-        portal = new GameObject(_camera.GameRect.Center.ToVector2())
+        portal = new Portal(_camera.GameRect.Center.ToVector2())
         {
-            Sprites = [new SpriteNode(_juicyCM.Textures["spritesheet"], _juicyCM.Animations["portal"])
-            {
-                FrameRatio = 0.25f,
-            }],
+            Sprites = [_juicyCM.GenerateSprite(
+                textureName: "spritesheet",
+                animationName: "portal",
+                frameRatio: 0.25f
+            )],
             Colliders = [new ColliderNode(0, 0, 48, 48)],
         };
 
@@ -405,7 +410,7 @@ public class Game1 : Game
         //handle game states
         if (gameState == GameState.Title)
         {
-            UpdatePlayer(inputState);
+            UpdatePlayer();
             if (inputState.GetInput((int)InputSignal.Accept) > 0)
             {
                 gameState = GameState.GamePlay;
@@ -414,7 +419,7 @@ public class Game1 : Game
         else if (gameState == GameState.GameOver)
         {
             UpdateBullets();
-            UpdateEnemies(inputState);
+            UpdateEnemies();
             if (inputState.GetInput((int)InputSignal.Accept) > 0)
             {
                 //reset game
@@ -430,13 +435,13 @@ public class Game1 : Game
         }
         else
         {
-            UpdatePlayer(inputState);
+            UpdatePlayer();
             UpdateBullets();
-            UpdateEnemies(inputState);
-            UpdatePickups(inputState);
+            UpdateEnemies();
+            UpdatePickups();
         }
+        UpdatePortal();
         UpdateParticles();
-        portal.Update(null, frameNumber, inputState);
 
         //ready next frame
         _prevKeyboardState = keyboardState;
@@ -446,12 +451,12 @@ public class Game1 : Game
         base.Update(gameTime);
     }
 
-    private void UpdatePlayer(InputState inputState)
+    private void UpdatePlayer()
     {
         //movement
         Vector2 moveVector = new(
-            inputState.GetInput((int)InputSignal.HorizontalMovement),
-            inputState.GetInput((int)InputSignal.VerticalMovement)
+            _inputManager.InputState.GetInput((int)InputSignal.HorizontalMovement),
+            _inputManager.InputState.GetInput((int)InputSignal.VerticalMovement)
         );
 
         //snap the angle to one of 8 directions
@@ -469,7 +474,7 @@ public class Game1 : Game
                 ship.Y = MathF.Round(ship.Y);
             }
         }
-        ship.Update(null, frameNumber, inputState); // this sets the previousPosition value to the current position
+        ship.Update(null, frameNumber, _inputManager.InputState); // this sets the previousPosition value to the current position
         ship.Position += moveVector * shipSpeed;
 
         //wall collisions
@@ -540,8 +545,8 @@ public class Game1 : Game
 
         //shooting
         Vector2 fireVector = new(
-            inputState.GetInput((int)InputSignal.FireHorizontal),
-            inputState.GetInput((int)InputSignal.FireVertical)
+            _inputManager.InputState.GetInput((int)InputSignal.FireHorizontal),
+            _inputManager.InputState.GetInput((int)InputSignal.FireVertical)
         );
         if (fireVector.LengthSquared() > 0)
         {
@@ -595,7 +600,7 @@ public class Game1 : Game
         }
     }
 
-    private void UpdateEnemies(InputState inputState)
+    private void UpdateEnemies()
     {
         for (int enemyIndex = currentRoom.Enemies.Count - 1; enemyIndex >= 0; enemyIndex--)
         {
@@ -655,7 +660,7 @@ public class Game1 : Game
                             enemy.lastTurnedFrame = frameNumber;
                             _juicyCM.SetSpriteAnimation(enemy.Sprites[0], "enemy" + JuicyContentManager.DirectionString(directionNames, facing));
                         }
-                        enemy.Update(null, frameNumber, inputState);
+                        enemy.Update(null, frameNumber, _inputManager.InputState);
                     }
                     break;
 
@@ -741,13 +746,13 @@ public class Game1 : Game
         }
     }
 
-    private void UpdatePickups(InputState inputState)
+    private void UpdatePickups()
     {
-        var fireVectorLengthSquared = new Vector2(inputState[(int)InputSignal.FireHorizontal], inputState[(int)InputSignal.FireVertical]).LengthSquared();
+        var fireVectorLengthSquared = new Vector2(_inputManager.InputState[(int)InputSignal.FireHorizontal], _inputManager.InputState[(int)InputSignal.FireVertical]).LengthSquared();
         for (int i = pickups.Count - 1; i >= 0; i--)
         {
             var pickup = pickups[i];
-            pickup.Update(null, frameNumber, inputState);
+            pickup.Update(null, frameNumber, _inputManager.InputState);
 
             if (fireVectorLengthSquared == 0)
             {
@@ -830,6 +835,22 @@ public class Game1 : Game
         }
     }
 
+    private void UpdatePortal()
+    {
+        portal.Update(null, frameNumber, _inputManager.InputState);
+
+        var sparkPosition = portal.Position + MathHelper.AngleToVector(random.NextSingle() * MathF.PI * 2,  24);
+        var direction = portal.Position - sparkPosition;
+        direction.Normalize();
+        var dirString = JuicyContentManager.DirectionString(slopeNames, direction);
+        var particle = new Particle(sparkPosition)
+        {
+            Sprites = [_juicyCM.GenerateSprite("spritesheet", "spark " + dirString)],
+            Velocity = direction * 3,
+        };
+        portal.Particles.Add(particle);
+    }
+
     #endregion
 
     #region Misc methods
@@ -890,14 +911,16 @@ public class Game1 : Game
         _juicyCM.Sounds["explosion5"].Play();
     }
 
-    private void MakeSpark(Vector2 position, float direction)
+    private Particle MakeSpark(Vector2 position, float direction)
     {
         var dirString = JuicyContentManager.DirectionString(slopeNames, direction);
-        particles.Add(new Particle(position)
+        var particle = new Particle(position)
         {
             Sprites = [_juicyCM.GenerateSprite("spritesheet", "spark " + dirString)],
             Velocity = MathHelper.AngleToVector(direction, 3),
-        });
+        };
+        particles.Add(particle);
+        return particle;
     }
 
     private void HitPlayer()

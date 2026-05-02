@@ -11,9 +11,18 @@ public class Portal(Vector2 position) : GameObject(position)
 {
     public List<Particle> Particles = [];
 
+    public bool Open;
+
+    public float OpenFrames;
+
     public override void Update(Node parent, int frameNumber, InputState inputState)
     {
         base.Update(parent, frameNumber, inputState);
+
+        if (Open && OpenFrames < Sprites[0].Animation.Width)
+        {
+            OpenFrames += 0.5f;
+        }
 
         for (int i = Particles.Count - 1; i >= 0; i--)
         {

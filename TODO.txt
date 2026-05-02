@@ -1,10 +1,8 @@
 TODO
 Next up:
-- make the exit look prettier
 - exit should only be available after all the enemies are dead
 - there should be some kind of animation
 - proper game over
-- deep copy rooms instead of reusing the same ones
 - combat updates
   - enemy states
     - avoid walls while chasing
@@ -31,7 +29,6 @@ Content:
 
 Technical:
 - autogenerate wall colliders based on tiles
-- deep copy rooms when generating maps
 
 
 DONE
@@ -69,3 +66,5 @@ DONE
 - rotation delay for enemies
 - starting room
 - level exit
+- make the exit look prettier
+- deep copy rooms instead of reusing the same ones

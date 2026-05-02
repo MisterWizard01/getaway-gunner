@@ -56,7 +56,7 @@ public class Game1 : Game
     private Effect _betterBlend;
     private Texture2D _whitePixel;
 
-    private Dictionary<string, Room>[] roomPool;
+    private List<string>[] roomPool;
     private readonly string[] roomTypes = ["", "r", "t", "rt", "l", "rl", "tl", "rtl", "b", "rb", "tb", "rtb", "lb", "rlb", "tlb", "rtlb",];
     private Room[] level;
     private readonly int levelWidth = 7, levelHeight = 7, targetRoomCount = 10;
@@ -240,7 +240,9 @@ public class Game1 : Game
         _juicyCM.GenerateAnimation("electric barrier", 7, 144, 96, 32, 8, -16, true)
             .EndAction = AnimationEndAction.Cycle;
         _juicyCM.GenerateAnimation("portal", 3, 192, 112, 48, 48, 0, true)
-            .EndAction = AnimationEndAction.Reverse;;
+            .EndAction = AnimationEndAction.Reverse;
+        _juicyCM.GenerateAnimation("portal door left", 1, 192, 160, 32, 48, 0, true);
+        _juicyCM.GenerateAnimation("portal door right", 1, 224, 160, 32, 48, 0, true);
 
         // _juicyCM.LoadFonts();
         _juicyCM.Fonts.Add("tiny mono", FontBuilder.BuildFont(_juicyCM.Textures["tiny mono"], new Point(3, 3), new Point(1, 1), ' ', false));
@@ -252,7 +254,7 @@ public class Game1 : Game
         _juicyCM.LoadTilesets(Path.Combine(contentFolder, "Tiled"));
 
         //load the rooms
-        roomPool = new Dictionary<string, Room>[16];
+        roomPool = new List<string>[16];
         for (int i = 1; i < roomTypes.Length; i++)
         {
             roomPool[i] = [];
@@ -263,14 +265,7 @@ public class Game1 : Game
                 var fileName = Path.GetFileNameWithoutExtension(file.Name);
                 if (file.Extension == ".tmj")
                 {
-                    var room = _tiledParser.ParseRoom(_juicyCM, file.FullName);
-                    if (room == null)
-                    {
-                        Debug.WriteLine("Could not read JSON room file: " + file.FullName);
-                        continue;
-                    }
-                    room.RoomType = i;
-                    roomPool[i].Add(fileName, room);
+                    roomPool[i].Add(file.FullName);
                 }
             }
         }
@@ -278,7 +273,7 @@ public class Game1 : Game
         GenerateLevel(roomPool);
     }
 
-    public void GenerateLevel(Dictionary<string, Room>[] roomPool)
+    public void GenerateLevel(List<string>[] roomPool)
     {
         //generate the map
         var center = levelWidth / 2 + levelHeight / 2 * levelWidth;
@@ -347,13 +342,25 @@ public class Game1 : Game
             if (i % levelWidth > 0 && map[i - 1]) roomType += 4;
             if (i / levelWidth < levelHeight - 1 && map[i + levelWidth]) roomType += 8;
 
-            //fill in the actual room
+            //if it's the center, it should always be the empty start room
             var typePool = roomPool[roomType];
-            level[i] = typePool.ElementAt(random.Next(0, typePool.Count)).Value;
+            var roomName = typePool.ElementAt(random.Next(0, typePool.Count));
             if (i == center)
             {
-                level[i] = typePool[roomTypes[roomType] + "_0"];
+                roomName = typePool[0];
             }
+
+            //fill in the actual room
+            var room = _tiledParser.ParseRoom(_juicyCM, roomName);
+            if (room == null)
+            {
+                Debug.WriteLine("Could not read JSON room file: " + roomName);
+                typePool.Remove(roomName);
+                continue;
+            } 
+            room.RoomType = roomType;
+            level[i] = room;
+
             roomsPlaced++;
             // if (roomPool.Count + roomsPlaced > roomCount)
             //     roomPool.Remove(level[i]);
@@ -849,6 +856,11 @@ public class Game1 : Game
             Velocity = direction * 3,
         };
         portal.Particles.Add(particle);
+
+        if (currentRoom.ContainsPortal && currentRoom.Enemies.Count == 0)
+        {
+            portal.Open = true;
+        }
     }
 
     #endregion
@@ -1012,14 +1024,9 @@ public class Game1 : Game
         );
         _spriteBatch.GraphicsDevice.ScissorRectangle = _camera.ViewRect;
 
-        _camera.Draw(_whitePixel, new Rectangle(_camera.GameRect.Center, _camera.GameRect.Size), new Color(20, 24, 46));
+        _camera.Draw(_whitePixel, _camera.GameRect, new Color(20, 24, 46));
 
         currentRoom.Draw(_camera);
-
-        if (currentRoom.ContainsPortal)
-        {
-            portal.Draw(null, _camera, Vector2.Zero);
-        }
 
         if (currentRoom.Enemies.Count > 0)
         {
@@ -1031,6 +1038,30 @@ public class Game1 : Game
                     barrier.Draw(null, _camera, Vector2.Zero);
                 }
             }
+        }
+        
+        if (currentRoom.ContainsPortal)
+        {
+            portal.Draw(null, _camera, Vector2.Zero);
+            var leftPosition = _juicyCM.Animations["portal door left"][0];
+            var rightPosition = _juicyCM.Animations["portal door right"][0];
+            var size = _juicyCM.Animations["portal door left"].Size;
+            
+            var leftDoorDest = new Rectangle(
+                (int)(portal.X - portal.Sprites[0].Animation.Width / 2),
+                (int)portal.Y - size.Y / 2,
+                (int)(size.X - portal.OpenFrames),
+                size.Y);
+            var leftDoorSource = new Rectangle(new((int)(leftPosition.X + portal.OpenFrames), leftPosition.Y), new Point((int)(size.X - portal.OpenFrames), size.Y));
+            _camera.Draw(_juicyCM.Textures["spritesheet"], leftDoorDest, leftDoorSource, Color.Transparent);
+
+            var rightDoorDest = new Rectangle(
+                (int)(portal.X + portal.Sprites[0].Animation.Width / 2 - size.X + portal.OpenFrames),
+                (int)portal.Y - size.Y / 2,
+                (int)(size.X - portal.OpenFrames),
+                size.Y);
+            var rightDoorSource = new Rectangle(new(rightPosition.X, rightPosition.Y), new Point((int)(size.X - portal.OpenFrames), size.Y));
+            _camera.Draw(_juicyCM.Textures["spritesheet"], rightDoorDest, rightDoorSource, Color.Transparent);
         }
 
         foreach (var enemy in currentRoom.Enemies)
